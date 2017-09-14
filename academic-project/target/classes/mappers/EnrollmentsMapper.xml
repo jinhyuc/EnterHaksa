@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.hyucs.academic.mapper.EnrollmentsMapper">
+	<insert id="insert">
+		INSERT INTO tbl_enrollments(lcode, scode)
+		VALUES(#{lcode}, #{scode})
+	</insert>
+	
+	<select id="read" resultType="EnrollmentsVO">
+		SELECT e.*, c.lname, s.sname
+		FROM tbl_enrollments e
+		JOIN tbl_courses c ON e.lcode=c.lcode
+		JOIN tbl_students s ON e.scode=s.scode
+		WHERE e.lcode=#{lcode} AND e.scode=#{scode}
+	</select>
+	
+	<delete id="delete">
+		DELETE FROM tbl_enrollments
+		WHERE lcode=#{lcode} AND scode=#{scode}
+	</delete>
+	
+	<update id="update">
+		UPDATE tbl_enrollments
+		SET edate=#{eDate}, grade=#{grade}
+		WHERE lcode=#{lcode} AND scode=#{scode}
+	</update>
+	
+	<select id="listSearch" resultType="EnrollmentsVO">
+		SELECT e.*, c.lname, s.sname
+		FROM tbl_enrollments e
+		JOIN tbl_courses c ON e.lcode=c.lcode
+		JOIN tbl_students s ON e.scode=s.scode
+		
+		<include refid="search"></include>
+		
+		LIMIT #{pageStart}, #{perPageNum}
+	</select>
+	
+	<select id="listSearchCount" resultType="int">
+		SELECT count(*)
+		FROM tbl_enrollments e
+		JOIN tbl_courses c ON e.lcode=c.lcode
+		JOIN tbl_students s ON e.scode=s.scode
+		
+		<include refid="search"></include>
+	</select>
+	
+	<select id="listByCourse" resultType="EnrollmentsVO">
+		SELECT e.*, c.lname, s.sname
+		FROM tbl_enrollments e
+		JOIN tbl_courses c ON e.lcode=c.lcode
+		JOIN tbl_students s ON e.scode=s.scode
+		WHERE e.lcode=#{lcode}
+	</select>
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 'lc'.toString()">
+				WHERE e.lcode like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'sc'.toString()">
+				WHERE e.scode like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'ln'.toString()">
+				WHERE c.lname like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'sn'.toString()">
+				WHERE s.sname like CONCAT('%', #{keyword}, '%')
+			</if>
+		</if>
+	</sql>
+</mapper>

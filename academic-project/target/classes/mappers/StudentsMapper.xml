@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.hyucs.academic.mapper.StudentsMapper">
+	<select id="listAll" resultType="StudentsVO">
+		SELECT *
+		FROM tbl_students
+		ORDER BY scode DESC
+	</select>
+	
+	<select id="listByCourse" resultType="StudentsVO">
+		SELECT s.*, p.pname
+		FROM tbl_students s 
+		JOIN tbl_professors p ON s.advisor=p.pcode
+		JOIN tbl_enrollments e ON s.scode=e.scode
+		WHERE e.lcode=#{lcode}
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tbl_students
+		VALUES(#{scode}, #{sname}, #{dept}, #{year}, #{birthday}, #{advisor})
+	</insert>
+	
+	<insert id="addPicture">
+		INSERT INTO tbl_stu_attach(picture, scode)
+		VALUES(#{picture}, #{scode})
+	</insert>
+	
+	<select id="read" resultType="StudentsVO">
+		SELECT s.*, p.pname, sa.picture
+		FROM tbl_students s
+		JOIN tbl_professors p ON s.advisor=p.pcode
+		LEFT JOIN tbl_stu_attach sa ON s.scode=sa.scode
+		WHERE s.scode=#{scode}
+	</select>
+	
+	<select id="getPicture" resultType="String">
+		SELECT picture
+		FROM tbl_stu_attach
+		WHERE scode=#{scode}
+	</select>
+	
+	<delete id="delete">
+		DELETE FROM tbl_students
+		WHERE scode=#{scode}
+	</delete>
+	
+	<delete id="deletePicByScode">
+		DELETE FROM tbl_stu_attach
+		WHERE scode=#{scode}
+	</delete>
+	
+	<delete id="deletePicByFilename">
+		DELETE FROM tbl_stu_attach
+		WHERE picture=#{fileName}
+	</delete>
+	
+	<update id="update">
+		UPDATE tbl_students
+		SET sname=#{sname}, dept=#{dept}, year=#{year}, birthday=#{birthday}, advisor=#{advisor}
+		WHERE scode=#{scode}
+	</update>
+	
+	<select id="listSearch" resultType="StudentsVO">
+		SELECT s.*, p.pname
+		FROM tbl_students s
+		JOIN tbl_professors p ON s.advisor=p.pcode
+		
+		<include refid="search"></include>
+		
+		ORDER BY scode DESC
+		LIMIT #{pageStart}, #{perPageNum}
+	</select>
+   	
+	<select id="listSearchCount" resultType="int">
+		SELECT COUNT(scode)
+		FROM tbl_students s
+		JOIN tbl_professors p ON s.advisor=p.pcode
+		
+		<include refid="search"></include>
+	</select>
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 'c'.toString()">
+				WHERE scode like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'n'.toString()">
+				WHERE sname like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'd'.toString()">
+				WHERE dept like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'y'.toString()">
+				WHERE year like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'a'.toString()">
+				WHERE p.pname like CONCAT('%', #{keyword}, '%')
+			</if>
+		</if>
+	</sql>
+</mapper>
