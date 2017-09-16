@@ -9,6 +9,7 @@ public class ProfessorsVO {
 	private Date hireDate;
 	private String title;
 	private int salary;
+	private String picture;
 	
 	public String getPcode() {
 		return pcode;
@@ -46,10 +47,16 @@ public class ProfessorsVO {
 	public void setSalary(int salary) {
 		this.salary = salary;
 	}
+	public String getPicture() {
+		return picture;
+	}
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
 	
 	@Override
 	public String toString() {
 		return "ProfessorsVO [pcode=" + pcode + ", pname=" + pname + ", dept=" + dept + ", hireDate=" + hireDate
-				+ ", title=" + title + ", salary=" + salary + "]";
+				+ ", title=" + title + ", salary=" + salary + ", picture=" + picture + "]";
 	}
 }

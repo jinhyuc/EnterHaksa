@@ -121,7 +121,7 @@
 	String mm = request.getAttribute("mm").toString();
 	String dd = request.getAttribute("dd").toString();
 %>
-<script id="template" type="text/x-handlebars-template">
+<script id="template-pic" type="text/x-handlebars-template">
 <li>
 	<span class="picture-attachment-icon has-img">
 		<img src="{{imgsrc}}" alt="Picture">
@@ -135,8 +135,8 @@
 </li>
 </script>
 <script>
-var template = Handlebars.compile($("#template").html());
-var $scode = ${svo.scode};
+var template = Handlebars.compile($("#template-pic").html());
+var $scode = "${svo.scode}";
 	
 $(document).ready(function() {
 	var frm = document.getElementById('form-modify-student');

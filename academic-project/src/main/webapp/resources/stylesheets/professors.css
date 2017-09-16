@@ -4,10 +4,26 @@
 #div-searchform {
 	padding-left: 0px;
 }
-#btn-modify-prof,
-#btn-delete-prof,
+
 #btn-profList {
-	margin-bottom: 40px;
+	margin-bottom: 20px;
+}
+
+.div-submit-btn {
+	margin-bottom: 20px;
+}
+
+.table-professor-information {
+	margin-bottom: 0px;
+}
+.table-professor-information > tbody > tr {
+	border-top: 1px solid rgb(221, 221, 221);
+}
+.table-professor-information > tbody > tr:first-child {
+	border-top: none;
+}
+.table-professor-information > tbody > tr > td {
+	border-top: none;
 }
 
 .panel-default {
@@ -59,4 +75,18 @@
 }
 .panel-default .collapsed {
 	color: #5f6f7e;
+}
+
+.add-picture {
+	margin-bottom: 20px;
+}
+
+.tooltip-wrapper {
+  display: inline-block; /* display: block works as well */
+  margin-right: 50px; /* make some space so the tooltip is visible */
+  margin-left: 10px;
+}
+
+.tooltip-wrapper .btn[disabled] {
+  pointer-events: none;
 }

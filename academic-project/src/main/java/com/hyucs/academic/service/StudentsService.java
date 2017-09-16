@@ -12,12 +12,6 @@ public interface StudentsService {
 	
 	public void create(StudentsVO vo) throws Exception;
 	
-	public void addPicture(String picture, String scode) throws Exception;
-	
-	public String getPicture(String scode) throws Exception;
-	
-	public void deletePictureByFilename(String fileName) throws Exception;
-	
 	public StudentsVO read(String scode) throws Exception;
 	
 	public void modify(StudentsVO vo) throws Exception;
@@ -27,4 +21,10 @@ public interface StudentsService {
 	public List<StudentsVO> listSearch(SearchCriteria cri) throws Exception;
 	
 	public int listSearchCount(SearchCriteria cri) throws Exception;
+	
+	public void addPicture(String picture, String scode) throws Exception;
+	
+	public String getPicture(String scode) throws Exception;
+	
+	public void deletePictureByFilename(String fileName) throws Exception;
 }

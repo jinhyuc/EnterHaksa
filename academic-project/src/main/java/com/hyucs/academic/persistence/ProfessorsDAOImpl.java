@@ -1,5 +1,6 @@
 package com.hyucs.academic.persistence;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -49,5 +50,30 @@ public class ProfessorsDAOImpl implements ProfessorsDAO {
 	@Override
 	public int listSearchCount(SearchCriteria cri) throws Exception {
 		return session.selectOne(namespace + ".listSearchCount", cri);
+	}
+
+	@Override
+	public void addPicture(String picture, String pcode) throws Exception {
+		HashMap<String, Object> paramMap = new HashMap<String, Object>();
+		
+		paramMap.put("picture", picture);
+		paramMap.put("pcode", pcode);
+		
+		session.insert(namespace + ".addPicture", paramMap);
+	}
+
+	@Override
+	public String getPicture(String pcode) throws Exception {
+		return session.selectOne(namespace + ".getPicture", pcode);
+	}
+
+	@Override
+	public void deletePictureByPcode(String pcode) throws Exception {
+		session.delete(namespace + ".deletePicByPcode", pcode);
+	}
+
+	@Override
+	public void deletePictureByFilename(String fileName) throws Exception {
+		session.delete(namespace + ".deletePicByFilename", fileName);		
 	}
 }

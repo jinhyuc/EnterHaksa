@@ -22,7 +22,12 @@ public class ProfessorsServiceImpl implements ProfessorsService {
 	
 	@Override
 	public void create(ProfessorsVO vo) throws Exception {
+		String picture = vo.getPicture();
+		String pcode = vo.getPcode();
+		
 		dao.create(vo);
+		
+		dao.addPicture(picture, pcode);
 	}
 
 	@Override
@@ -37,6 +42,8 @@ public class ProfessorsServiceImpl implements ProfessorsService {
 
 	@Override
 	public void remove(String pcode) throws Exception {
+		dao.deletePictureByPcode(pcode);
+		
 		dao.delete(pcode);
 	}
 
@@ -48,5 +55,20 @@ public class ProfessorsServiceImpl implements ProfessorsService {
 	@Override
 	public int listSearchCount(SearchCriteria cri) throws Exception {
 		return dao.listSearchCount(cri);
+	}
+
+	@Override
+	public void addPicture(String picture, String pcode) throws Exception {
+		dao.addPicture(picture, pcode);
+	}
+
+	@Override
+	public String getPicture(String pcode) throws Exception {
+		return dao.getPicture(pcode);
+	}
+
+	@Override
+	public void deletePictureByFilename(String fileName) throws Exception {
+		dao.deletePictureByFilename(fileName);
 	}
 }

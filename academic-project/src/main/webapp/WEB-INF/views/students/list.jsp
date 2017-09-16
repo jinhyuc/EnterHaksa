@@ -152,7 +152,7 @@
 	if(result == "CREATE-SUCCESS") {
 		layer_popup.alert($el_alert, "학생 등록이 완료 되었습니다.");
 	} else if(result == "CREATE-FAIL") {
-		layer_popup.alert($el_alert, "학생 등록이 실패 되었습니다.");
+		layer_popup.alert($el_alert, "학생 등록이 실패 하였습니다.");
 	} else if(result == "MODIFY-SUCCESS") {
 		layer_popup.alert($el_alert, "학생 정보가 수정 되었습니다.");
 	} else if(result == "REMOVE-SUCCESS") {

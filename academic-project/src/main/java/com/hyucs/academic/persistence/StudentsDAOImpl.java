@@ -34,31 +34,6 @@ public class StudentsDAOImpl implements StudentsDAO {
 	}
 
 	@Override
-	public void addPicture(String picture, String scode) throws Exception {
-		HashMap<String, Object> paramMap = new HashMap<String, Object>();
-		
-		paramMap.put("picture", picture);
-		paramMap.put("scode", scode);
-		
-		session.insert(namespace + ".addPicture", paramMap);
-	}
-	
-	@Override
-	public String getPicture(String scode) throws Exception {
-		return session.selectOne(namespace + ".getPicture", scode);		
-	}
-	
-	@Override
-	public void deletePictureByScode(String scode) throws Exception {
-		session.delete(namespace + ".deletePicByScode", scode);
-	}
-	
-	@Override
-	public void deletePictureByFilename(String fileName) throws Exception {
-		session.delete(namespace + ".deletePicByFilename", fileName);		
-	}
-	
-	@Override
 	public StudentsVO read(String scode) throws Exception {
 		return session.selectOne(namespace + ".read", scode);
 	}
@@ -81,5 +56,30 @@ public class StudentsDAOImpl implements StudentsDAO {
 	@Override
 	public int listSearchCount(SearchCriteria cri) throws Exception {
 		return session.selectOne(namespace + ".listSearchCount", cri);
+	}
+	
+	@Override
+	public void addPicture(String picture, String scode) throws Exception {
+		HashMap<String, Object> paramMap = new HashMap<String, Object>();
+		
+		paramMap.put("picture", picture);
+		paramMap.put("scode", scode);
+		
+		session.insert(namespace + ".addPicture", paramMap);
+	}
+	
+	@Override
+	public String getPicture(String scode) throws Exception {
+		return session.selectOne(namespace + ".getPicture", scode);		
+	}
+	
+	@Override
+	public void deletePictureByScode(String scode) throws Exception {
+		session.delete(namespace + ".deletePicByScode", scode);
+	}
+	
+	@Override
+	public void deletePictureByFilename(String fileName) throws Exception {
+		session.delete(namespace + ".deletePicByFilename", fileName);		
 	}
 }

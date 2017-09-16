@@ -96,6 +96,29 @@ input[type="text"], .form-group select { border-radius: 0px }
      border-top-right-radius: 5px;
 }
 
+.picture-input {
+	position: relative;
+	overflow: hidden;
+	margin: 0px;
+	color: #333;
+	background-color: #fff;
+	border-color: #ccc;
+}
+.picture-input input[type=file] {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	font-size: 20px;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+.picture-input-title {
+	margin-left: 2px;
+}
+
 .picture-attachments {
 	list-style: none;
 	margin-bottom: 20px;
@@ -213,4 +236,59 @@ input[type="text"], .form-group select { border-radius: 0px }
 	border-top: 1px solid #f4f4f4;
 	padding: 10px;
 	background-color: #ffffff;
+}
+
+/*
+ * Layer Pop-up
+ */
+.pop-layer .pop-container {
+	padding: 20px 25px;
+}
+.pop-layer p {
+	color: #666;
+	line-height: 25px;
+}
+.pop-layer .div-popbtn {
+	width: 100%;
+	margin: 10px 0 0;
+	padding-top: 10px;
+	border-top: 1px solid #DDD;
+	text-align: right;
+}
+.pop-layer .div-popmsg {
+	margin-bottom: 40px;
+}
+.pop-layer {
+	display: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 410px;
+	height: auto;
+	background-color: #fff;
+	border: 1px solid #3571B5;
+	z-index: 10;
+}
+.layer {
+	display: none;
+	position: fixed;
+	_position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1040;
+}
+.layer .layer-bg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: .5;
+	filter: alpha(opacity=50);
+}
+.layer .pop-layer {
+	display: block;
 }

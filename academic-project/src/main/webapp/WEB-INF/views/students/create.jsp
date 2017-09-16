@@ -76,7 +76,7 @@
 								<div class="btn btn-default picture-input">
 									<span class="glyphicon glyphicon-folder-open"></span>
 									<span class="picture-input-title"> </span>
-									<input id="input-pic-file" type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview">
+									<input id="input-pic-file" type="file" accept="image/png, image/jpeg, image/gif">
 								</div>
 							</span>
 							<div class="tooltip-wrapper">
@@ -110,7 +110,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
 	<script src="/resources/js/upload.js"></script>
 </body>
-<script id="template" type="text/x-handlebars-template">
+<script id="template-pic" type="text/x-handlebars-template">
 <li>
 	<span class="picture-attachment-icon has-img">
 		<img src="{{imgsrc}}" alt="Picture">
@@ -151,7 +151,7 @@ $(document).ready(function() {
 		$(".image-preview-filename").val(file.name);
 	});
 
-	var template = Handlebars.compile($("#template").html());
+	var template = Handlebars.compile($("#template-pic").html());
 
 	$("#btn-addPicture").on("click", function(event) {
 		var file = $(".picture-input input:file").prop("files")[0];

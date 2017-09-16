@@ -34,22 +34,7 @@ public class StudentsServiceImpl implements StudentsService {
 		
 		dao.create(vo);
 		
-		dao.addPicture(picture, scode);		
-	}
-	
-	@Override
-	public void addPicture(String picture, String scode) throws Exception {
 		dao.addPicture(picture, scode);
-	}
-	
-	@Override
-	public String getPicture(String scode) throws Exception {
-		return dao.getPicture(scode);
-	}
-	
-	@Override
-	public void deletePictureByFilename(String fileName) throws Exception {
-		dao.deletePictureByFilename(fileName);
 	}
 
 	@Override
@@ -76,5 +61,20 @@ public class StudentsServiceImpl implements StudentsService {
 	@Override
 	public int listSearchCount(SearchCriteria cri) throws Exception {
 		return dao.listSearchCount(cri);
+	}
+	
+	@Override
+	public void addPicture(String picture, String scode) throws Exception {
+		dao.addPicture(picture, scode);
+	}
+	
+	@Override
+	public String getPicture(String scode) throws Exception {
+		return dao.getPicture(scode);
+	}
+	
+	@Override
+	public void deletePictureByFilename(String fileName) throws Exception {
+		dao.deletePictureByFilename(fileName);
 	}
 }

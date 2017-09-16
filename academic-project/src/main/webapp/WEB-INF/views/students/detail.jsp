@@ -257,7 +257,7 @@
 	</table>
 </script>
 <script>
-var scode = ${svo.scode};
+var scode = "${svo.scode}";
 
 var printList = function(list, templateObj) {
 	var template = Handlebars.compile(templateObj.html());
@@ -269,7 +269,7 @@ var printList = function(list, templateObj) {
 $(document).ready(function() {
 	var formObj = $("#modifyfrm");
 	
-	getPicture();
+	initPicture();
 	
 	$("#btn-studentsList").on("click", function(event) {
 		formObj.attr("action", "/students/list");
@@ -283,14 +283,9 @@ $(document).ready(function() {
 		formObj.submit();
 	});
 	
-/* 	$("#btn-delete-student").on("click", function(event) {
-		deletePicture();
-		formObj.attr("action", "/students/remove");
-		formObj.submit();
-	}); */
 	$("#btn-delete-student").on("click", function(event) {
 		var $el_confirm = $("#confirm-pop");
-		var $el_alert = $("#alert-pop");
+
 		layer_popup.confirm($el_confirm, "학생 정보를 삭제하시겠습니까?", function() {
 			deletePicture();
 			formObj.attr("action", "/students/remove");
@@ -350,14 +345,14 @@ function getCoursesList() {
 	});
 }
 
-function getPicture() {
+function initPicture() {
 	
 	$.getJSON("/students/getPicture/" + scode, function(data) {
 		console.log(data.picture);
 		var getLink;
 		
 		if(data.picture == null) {
-			getLink = "/resources/imgs/default_student.jpg";
+			getLink = "/resources/imgs/default_person.jpg";
 		} else {
 			var fullname = data.picture;
 			var front = fullname.substr(0, 12);

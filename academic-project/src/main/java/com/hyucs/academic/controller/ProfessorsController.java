@@ -1,18 +1,24 @@
 package com.hyucs.academic.controller;
 
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hyucs.academic.domain.PageMaker;
@@ -126,5 +132,48 @@ public class ProfessorsController {
 	public void detailGET(@RequestParam("pcode") String pcode, @ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
 		model.addAttribute("pvo", service.read(pcode));
 		model.addAttribute("clistByProf", cservice.listByProf(pcode));
+	}
+	
+	@RequestMapping(value="/getPicture/{pcode}", method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> getPicture(@PathVariable("pcode") String pcode) throws Exception {
+		logger.info("-------------- Professors getPicture ------------------");
+		logger.info("pcode : " + pcode);
+		ResponseEntity<Map<String, Object>> entity = null;
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
+		String pictureName = service.getPicture(pcode);
+		
+		logger.info("pictureName : " + pictureName);
+		
+		paramMap.put("picture", pictureName);
+		entity = new ResponseEntity<Map<String, Object>>(paramMap, HttpStatus.OK);
+		
+		logger.info(entity.toString());
+		return entity;
+	}
+	
+	@RequestMapping(value="/deletePicture", method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> deletePicture(String fileName) throws Exception {
+		logger.info("-------------- Professors deletePicture ------------------");
+		logger.info("fileName: " + fileName);
+		
+		service.deletePictureByFilename(fileName);
+		
+		return new ResponseEntity<String>("deleted", HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/addPicture", method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> addPicture(String fileName, String pcode) throws Exception {
+		logger.info("-------------- Professors addPicture ------------------");
+		logger.info("pcode: " + pcode);
+		logger.info("fileName: " + fileName);
+		
+		service.addPicture(fileName, pcode);
+		
+		return new ResponseEntity<String>("added", HttpStatus.OK);
 	}
 }

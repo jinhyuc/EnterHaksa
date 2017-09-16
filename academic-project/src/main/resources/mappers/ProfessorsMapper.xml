@@ -15,15 +15,37 @@
 		VALUES(#{pcode}, #{pname}, #{dept}, #{hireDate}, #{title}, #{salary})
 	</insert>
 	
+	<insert id="addPicture">
+		INSERT INTO tbl_prof_attach(picture, pcode)
+		VALUES(#{picture}, #{pcode})
+	</insert>
+	
 	<select id="read" resultType="ProfessorsVO">
-		SELECT *
-		FROM tbl_professors
+		SELECT p.*, pa.picture
+		FROM tbl_professors p
+		LEFT JOIN tbl_prof_attach pa ON p.pcode=pa.pcode
+		WHERE p.pcode=#{pcode}
+	</select>
+	
+	<select id="getPicture" resultType="String">
+		SELECT picture
+		FROM tbl_prof_attach
 		WHERE pcode=#{pcode}
 	</select>
 	
 	<delete id="delete">
 		DELETE FROM tbl_professors
 		WHERE pcode=#{pcode}
+	</delete>
+	
+	<delete id="deletePicByPcode">
+		DELETE FROM tbl_prof_attach
+		WHERE pcode=#{pcode}
+	</delete>
+	
+	<delete id="deletePicByFilename">
+		DELETE FROM tbl_prof_attach
+		WHERE picture=#{fileName}
 	</delete>
 	
 	<update id="update">
