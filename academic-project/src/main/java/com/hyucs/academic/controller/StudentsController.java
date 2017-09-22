@@ -64,13 +64,11 @@ public class StudentsController {
 	}
 	
 	@RequestMapping(value="/create", method=RequestMethod.POST)
-	public String createPOST(StudentsVO vo, String birth_yy, String birth_mm, String birth_dd, RedirectAttributes rttr) throws Exception {
+	public String createPOST(StudentsVO vo, RedirectAttributes rttr) throws Exception {
 		if(service.read(vo.getScode()) != null) {
 			rttr.addFlashAttribute("result", "CREATE-FAIL");
 			return "redirect:/students/list";
 		}
-		
-		vo.setBirthday(Date.valueOf(birth_yy + "-" + birth_mm + "-" + birth_dd));
 		
 		service.create(vo);
 		rttr.addFlashAttribute("result", "CREATE-SUCCESS");
@@ -93,18 +91,13 @@ public class StudentsController {
 	@RequestMapping(value="/modify", method=RequestMethod.GET)
 	public void modifyGET(@RequestParam("scode") String scode, @ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
 		StudentsVO vo = service.read(scode);
-		String birthDay = vo.getBirthday().toString();
 		
 		model.addAttribute("svo", vo);
-		model.addAttribute("yy", birthDay.substring(0, 4));
-		model.addAttribute("mm", birthDay.substring(5, 7));
-		model.addAttribute("dd", birthDay.substring(8, 10));
 		model.addAttribute("plist", pservice.listAll());
 	}
 	
 	@RequestMapping(value="/modify", method=RequestMethod.POST)
-	public String modifyPOST(StudentsVO vo, SearchCriteria cri, String birth_yy, String birth_mm, String birth_dd, RedirectAttributes rttr) throws Exception {
-		vo.setBirthday(Date.valueOf(birth_yy + "-" + birth_mm + "-" + birth_dd));
+	public String modifyPOST(StudentsVO vo, SearchCriteria cri, RedirectAttributes rttr) throws Exception {
 		logger.info(vo.toString());
 		
 		service.modify(vo);
@@ -194,5 +187,28 @@ public class StudentsController {
 		service.addPicture(fileName, scode);
 		
 		return new ResponseEntity<String>("added", HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/countByProf/{advisor}" , method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> countByProf(@PathVariable("advisor") String advisor) {
+		logger.info("-------- Students countByProf --------");
+		logger.info(advisor);
+		
+		ResponseEntity<Map<String, Object>> entity=null;
+		
+		try {
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			int count = service.countByProf(advisor);
+			logger.info(String.valueOf(count));
+		
+			paramMap.put("count", count);
+		
+			entity = new ResponseEntity<Map<String, Object>>(paramMap, HttpStatus.OK);
+		} catch(Exception e) {
+			entity = new ResponseEntity<Map<String, Object>>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
 	}
 }

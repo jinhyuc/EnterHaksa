@@ -11,7 +11,7 @@
 	</select>
 	
 	<select id="listByCourse" resultType="StudentsVO">
-		SELECT s.*, p.pname
+		SELECT s.*, p.pname, e.grade
 		FROM tbl_students s 
 		JOIN tbl_professors p ON s.advisor=p.pcode
 		JOIN tbl_enrollments e ON s.scode=e.scode
@@ -34,6 +34,12 @@
 		JOIN tbl_professors p ON s.advisor=p.pcode
 		LEFT JOIN tbl_stu_attach sa ON s.scode=sa.scode
 		WHERE s.scode=#{scode}
+	</select>
+	
+	<select id="countByProf" resultType="int">
+		SELECT COUNT(scode)
+		FROM tbl_students
+		WHERE advisor=#{advisor}
 	</select>
 	
 	<select id="getPicture" resultType="String">

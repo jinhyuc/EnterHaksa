@@ -34,7 +34,9 @@ public class StudentsServiceImpl implements StudentsService {
 		
 		dao.create(vo);
 		
-		dao.addPicture(picture, scode);
+		if(picture != null) {
+			dao.addPicture(picture, scode);
+		}	
 	}
 
 	@Override
@@ -76,5 +78,10 @@ public class StudentsServiceImpl implements StudentsService {
 	@Override
 	public void deletePictureByFilename(String fileName) throws Exception {
 		dao.deletePictureByFilename(fileName);
+	}
+
+	@Override
+	public int countByProf(String advisor) throws Exception {
+		return dao.countByProf(advisor);
 	}
 }

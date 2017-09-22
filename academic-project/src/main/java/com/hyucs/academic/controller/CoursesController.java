@@ -1,6 +1,5 @@
 package com.hyucs.academic.controller;
 
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,10 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hyucs.academic.domain.CoursesVO;
-import com.hyucs.academic.domain.EnrollmentsVO;
 import com.hyucs.academic.domain.PageMaker;
 import com.hyucs.academic.domain.SearchCriteria;
-import com.hyucs.academic.domain.StudentsVO;
 import com.hyucs.academic.service.CoursesService;
 import com.hyucs.academic.service.ProfessorsService;
 
@@ -117,6 +114,27 @@ public class CoursesController {
 		return "redirect:/courses/list";
 	}
 	
+	@RequestMapping(value="/listAll" , method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> listAll() {
+		
+		ResponseEntity<Map<String, Object>> entity=null;
+		
+		try {
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			List<CoursesVO> list = service.listAll();
+			logger.info(list.toString());
+		
+			paramMap.put("list", list);
+		
+			entity = new ResponseEntity<Map<String, Object>>(paramMap, HttpStatus.OK);
+		} catch(Exception e) {
+			entity = new ResponseEntity<Map<String, Object>>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
+	
 	@RequestMapping(value="/listByStudent/{scode}" , method=RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> listByStudent(@PathVariable("scode") String scode) {
@@ -131,6 +149,29 @@ public class CoursesController {
 			logger.info(list.toString());
 		
 			paramMap.put("list", list);
+		
+			entity = new ResponseEntity<Map<String, Object>>(paramMap, HttpStatus.OK);
+		} catch(Exception e) {
+			entity = new ResponseEntity<Map<String, Object>>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
+	
+	@RequestMapping(value="/countByProf/{instructor}" , method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> countByProf(@PathVariable("instructor") String instructor) {
+		logger.info("-------- countByProf --------");
+		logger.info(instructor);
+		
+		ResponseEntity<Map<String, Object>> entity=null;
+		
+		try {
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			int count = service.countByProf(instructor);
+			logger.info(String.valueOf(count));
+		
+			paramMap.put("count", count);
 		
 			entity = new ResponseEntity<Map<String, Object>>(paramMap, HttpStatus.OK);
 		} catch(Exception e) {

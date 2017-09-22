@@ -12,6 +12,8 @@ public interface EnrollmentsDAO {
 	
 	public void update(EnrollmentsVO vo) throws Exception;
 	
+	public void updateGrade(EnrollmentsVO vo) throws Exception;
+	
 	public void delete(String lcode, String scode) throws Exception;
 	
 	public List<EnrollmentsVO> listSearch(SearchCriteria cri) throws Exception;
@@ -19,4 +21,8 @@ public interface EnrollmentsDAO {
 	public int listSearchCount(SearchCriteria cri) throws Exception;
 	
 	public List<EnrollmentsVO> listByCourse(String lcode) throws Exception;
+	
+	public int countByStudent(String scode) throws Exception;
+	
+	public int countByCourse(String lcode) throws Exception;
 }

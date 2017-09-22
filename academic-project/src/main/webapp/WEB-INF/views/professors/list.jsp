@@ -49,7 +49,7 @@
 			<br>
 			<div class="row">
 				<div class="table-responsive">
-					<table class="table table-hover table-bordered">
+					<table class="table table-hover list-table">
 						<thead>
 							<tr>
 								<th>교수번호</th>
@@ -149,8 +149,8 @@
 	
 	if(result == "CREATE-SUCCESS") {
 		layer_popup.alert($el_alert, "교수 등록이 완료 되었습니다.");
-	} else if(result == "CREATE-FAIL") {
-		layer_popup.alert($el_alert, "교수 등록이 실패 하였습니다.");
+	} else if(result == "CREATE-DUPLICATE") {
+		layer_popup.alert($el_alert, "동일한 교수번호가 존재합니다.");
 	} else if(result == "MODIFY-SUCCESS") {
 		layer_popup.alert($el_alert, "교수 정보가 수정 되었습니다.");
 	} else if(result == "REMOVE-SUCCESS") {

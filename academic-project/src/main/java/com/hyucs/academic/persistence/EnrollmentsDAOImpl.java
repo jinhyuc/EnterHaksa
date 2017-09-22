@@ -37,6 +37,11 @@ public class EnrollmentsDAOImpl implements EnrollmentsDAO {
 	public void update(EnrollmentsVO vo) throws Exception {
 		session.update(namespace + ".update", vo);
 	}
+	
+	@Override
+	public void updateGrade(EnrollmentsVO vo) throws Exception {
+		session.update(namespace + ".updateGrade", vo);
+	}
 
 	@Override
 	public void delete(String lcode, String scode) throws Exception {
@@ -61,5 +66,15 @@ public class EnrollmentsDAOImpl implements EnrollmentsDAO {
 	@Override
 	public List<EnrollmentsVO> listByCourse(String lcode) throws Exception {
 		return session.selectList(namespace + ".listByCourse", lcode);
+	}
+
+	@Override
+	public int countByStudent(String scode) throws Exception {
+		return session.selectOne(namespace + ".countByStudent", scode);
+	}
+
+	@Override
+	public int countByCourse(String lcode) throws Exception {
+		return session.selectOne(namespace + ".countByCourse", lcode);
 	}
 }

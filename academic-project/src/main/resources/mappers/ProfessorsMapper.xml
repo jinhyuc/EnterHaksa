@@ -10,6 +10,12 @@
 		ORDER BY pcode
 	</select>
 	
+	<select id="listByDepartment" resultType="ProfessorsVO">
+		SELECT *
+		FROM tbl_professors
+		WHERE dept=#{dept}
+	</select>
+	
 	<insert id="insert">
 		INSERT INTO tbl_professors
 		VALUES(#{pcode}, #{pname}, #{dept}, #{hireDate}, #{title}, #{salary})

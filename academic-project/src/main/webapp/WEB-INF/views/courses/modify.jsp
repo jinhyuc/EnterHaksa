@@ -31,7 +31,7 @@
 				
 				<div class="form-group">
 					<label for="input-lecturecode">강좌번호</label>
-					<input id="input-lecturecode" type="text" name="lcode" class="form-control" value="${cvo.lcode}" readonly="readonly">
+					<input id="input-lecturecode" type="text" name="lcode" class="form-control" value="${cvo.lcode}" readonly>
 				</div>
 				<div class="form-group">
 					<label for="input-lecturename">강좌이름</label>
@@ -46,12 +46,8 @@
 					<input id="input-room" type="text" name="room" class="form-control" value="${cvo.room}">
 				</div>
 				<div class="form-group">
-					<label for="select-instructor">담당교수</label>
-					<select id="select-instructor" name="instructor" class="form-control">
-						<c:forEach var="pvo" items="${plist}">
-							<option value="${pvo.pcode}" <c:out value="${cvo.instructor eq pvo.pcode?'selected':''}"/>>${pvo.pcode}: ${pvo.pname}</option>
-						</c:forEach>
-					</select>
+					<label>담당교수</label>
+					<input id="input-instructor" type="text" name="instructor" class="form-control" value="${cvo.pname}" data-pcode="${cvo.instructor}" readonly>
 				</div>
 				<div class="form-group">
 					<label for="input-capacity">최대 수강인원 수</label>
@@ -59,12 +55,12 @@
 				</div>
 				<div class="form-group">
 					<label for="input-persons">수강신청 인원 수</label>
-					<input id="input-persons" type="text" name="persons" class="form-control" value="${cvo.persons}">
+					<input id="input-persons" type="text" name="persons" class="form-control" value="${cvo.persons}" readonly>
 				</div>
 				<button type="submit" class="btn btn-success">
 					<span class="glyphicon glyphicon-ok"> </span> &nbsp;저장
 				</button>
-				<button type="reset" class="btn btn-danger">
+				<button id="btn-cancel" type="button" class="btn btn-danger">
 					<span class="glyphicon glyphicon-remove"> </span> &nbsp;취소
 				</button>
 			</form>
@@ -72,11 +68,143 @@
 
 	</div>
 	<jsp:include page="../include/footer.jsp" />
+	<!-- Professors Modal -->
+	<div class="modal fade" id="modal-plist" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header modal-header-info">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</button>
+					<h2><i class="glyphicon glyphicon-book"></i> 교수 목록</h2>
+				</div>
+				<div id="div-professorsList" class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<div class="col-md-5 col-lg-5 left-select">
+								<select id="select-college-p" class="form-control">
+									<option selected="" disabled="" hidden="" value=""> 대학 분류를 선택해주세요. </option>
+									<option value="인문대학">인문대학</option>
+									<option value="사회과학대학">사회과학대학</option>
+									<option value="자연과학대학">자연과학대학</option>
+									<option value="간호대학">간호대학</option>
+									<option value="경영대학">경영대학</option>
+									<option value="공과대학">공과대학</option>
+									<option value="농업생명과학대학">농업생명과학대학</option>
+									<option value="미술대학">미술대학</option>
+									<option value="법과대학">법과대학</option>
+									<option value="사범대학">사범대학</option>
+									<option value="생활과학대학">생활과학대학</option>
+									<option value="수의과대학">수의과대학</option>
+									<option value="약학대학">약학대학</option>
+									<option value="음악대학">음악대학</option>
+									<option value="의과대학">의과대학</option>
+								</select>
+							</div>
+							<div class="col-md-7 col-lg-7 right-select">
+								<select id="select-dept" class="form-control">
+								
+								</select>
+							</div>
+						</div>
+					</form>
+					<div class="modal-list">
+                    	<ul id="professorsList" class="list-group">
+                    
+                    	</ul>
+                    </div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">
+						<span class="glyphicon glyphicon-remove"> </span> &nbsp;닫기
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
 </body>
 
+<script id="template-dept-options" type="text/x-handlebars-template">
+<option selected="" disabled="" hidden="" value=""> 학과를 선택해주세요. </option>
+{{#each .}}
+	<option value="{{dname}}">{{dname}}</option>
+{{/each}}
+</script>
+
+<script id="template-professors" type="text/x-handlebars-template">
+{{#each .}}
+	<li class="list-group-item" data-pcode="{{pcode}}">{{pname}}</li>
+{{/each}}
+</script>
+
+<script>
+var formObj = $("#form-modify-course");
+
+$(document).ready(function() {
+	$("#btn-cancel").on("click", function(event) {
+		formObj.attr("action", "/courses/detail");
+		formObj.attr("method", "get");
+		formObj.submit();
+	});
+	
+	$("#input-instructor").on("click", function() {
+		$("#modal-plist").modal();
+	});
+	
+	$("#select-college-p").change(function(event) {
+		var dept_opt_template = Handlebars.compile($("#template-dept-options").html());
+		var college_p = $(this).val();
+		
+		$.getJSON("/departments/" + college_p, function(list) {
+			var html = dept_opt_template(list);
+			
+			$("#select-dept").html(html);
+		});
+	});
+	
+	$("#select-dept").change(function(event) {
+		var prof_template = Handlebars.compile($("#template-professors").html());
+		var dept = $(this).val();
+		
+		$.getJSON("/professors/" + dept, function(list) {
+			var html = prof_template(list);
+			
+			$("#professorsList").html(html);
+		});
+	});
+	
+	$("#professorsList").on("click", "li", function(event) {
+		var pcode = $(this).data("pcode");
+		var pname = $(this).text();
+		
+		$("#input-instructor").val(pname);
+		$("#input-instructor").data("pcode", pcode);
+		$("#modal-plist").modal('hide');
+	});
+	
+	$("#modal-plist").on("hidden.bs.modal", function(event) {
+		$(this).find('form')[0].reset();
+		$("#professorsList").empty();
+	});
+	
+	$("#form-modify-course").submit(function(event) {
+		event.preventDefault();
+		
+		var $this = $(this);
+
+		var pcode = $("#input-instructor").data("pcode");
+		
+		$("#input-instructor").val(pcode);
+
+		$this.get(0).submit();
+	});
+})
+</script>
 </html>

@@ -18,7 +18,22 @@ html, body { height: 100% }
 .navbar-default .navbar-nav>li.active>a:hover,
 .navbar-default .navbar-nav>li.active>a:focus { color: #FF8000; background-color: #fff }
 
-input[type="text"], .form-group select { border-radius: 0px }
+.list-table {
+	border: 1px solid #ccc;
+	padding: 5px;
+	box-shadow: 3px 3px 2px #ccc;
+	transition: 0.5s;
+}
+.list-table:hover {
+	box-shadow: 3px 3px 0px transparent;
+	transition: 0.5s;
+}
+
+input[type="text"],
+input[type="number"],
+.form-group select {
+	border-radius: 0px;
+}
 .btn { border-radius: 0px }
 .div-pagination>.pagination>li>a {
 	border-radius: 0px;
@@ -30,6 +45,31 @@ input[type="text"], .form-group select { border-radius: 0px }
 }
 .red {
 	color: #ff0000;
+}
+
+.modal-list {
+	margin-top: 20px;
+}
+.modal-list li {
+	cursor: pointer;
+}
+.modal-list li:hover {
+	background-color: lightgray;
+}
+
+.modal-list {
+	max-height: 400px;
+	overflow:auto;
+}
+
+#departmentsList>li {
+	border: none;
+	border-radius: 0px;
+}
+
+#professorsList>li {
+	border: none;
+	border-radius: 0px;
 }
 /*
  * Colored-Modal Heading

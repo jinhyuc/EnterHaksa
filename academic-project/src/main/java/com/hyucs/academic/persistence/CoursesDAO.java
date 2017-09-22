@@ -14,6 +14,8 @@ public interface CoursesDAO {
 	
 	public void update(CoursesVO vo) throws Exception;
 	
+	public void updatePersons(String lcode, int amount) throws Exception;
+	
 	public void delete(String lcode) throws Exception;
 	
 	public List<CoursesVO> listSearch(SearchCriteria cri) throws Exception;
@@ -23,4 +25,6 @@ public interface CoursesDAO {
 	public List<CoursesVO> listByProf(String pcode) throws Exception;
 	
 	public List<CoursesVO> listByStudent(String scode) throws Exception;
+	
+	public int countByProf(String instructor) throws Exception;
 }

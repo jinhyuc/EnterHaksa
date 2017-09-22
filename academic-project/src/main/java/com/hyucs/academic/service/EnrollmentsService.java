@@ -12,6 +12,8 @@ public interface EnrollmentsService {
 	
 	public void modify(EnrollmentsVO vo) throws Exception;
 	
+	public void modifyGrade(EnrollmentsVO vo) throws Exception;
+	
 	public void remove(String lcode, String scode) throws Exception;
 	
 	public List<EnrollmentsVO> listSearch(SearchCriteria cri) throws Exception;
@@ -19,4 +21,8 @@ public interface EnrollmentsService {
 	public int listSearchCount(SearchCriteria cri) throws Exception;
 	
 	public List<EnrollmentsVO> listByCourse(String lcode) throws Exception;
+	
+	public int countByStudent(String scode) throws Exception;
+	
+	public int countByCourse(String lcode) throws Exception;
 }

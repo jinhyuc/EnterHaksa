@@ -1,5 +1,6 @@
 package com.hyucs.academic.persistence;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -35,6 +36,17 @@ public class CoursesDAOImpl implements CoursesDAO {
 	public void update(CoursesVO vo) throws Exception {
 		session.update(namespace + ".update", vo);		
 	}
+	
+	@Override
+	public void updatePersons(String lcode, int amount) throws Exception {
+		HashMap<String, Object> paramMap = new HashMap<String, Object>();
+		
+		paramMap.put("lcode", lcode);
+		paramMap.put("amount", amount);
+		System.out.println("lcode = " + lcode);
+		System.out.println("amount = " + amount);
+		session.update(namespace + ".updatePersons", paramMap);
+	}
 
 	@Override
 	public void delete(String lcode) throws Exception {
@@ -59,5 +71,10 @@ public class CoursesDAOImpl implements CoursesDAO {
 	@Override
 	public List<CoursesVO> listByStudent(String scode) throws Exception {
 		return session.selectList(namespace + ".listByStudent", scode);
+	}
+
+	@Override
+	public int countByProf(String instructor) throws Exception {
+		return session.selectOne(namespace + ".countByProf", instructor);
 	}
 }

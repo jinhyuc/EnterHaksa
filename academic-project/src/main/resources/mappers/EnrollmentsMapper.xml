@@ -17,6 +17,19 @@
 		WHERE e.lcode=#{lcode} AND e.scode=#{scode}
 	</select>
 	
+	<select id="countByStudent" resultType="int">
+		SELECT COUNT(scode)
+		FROM tbl_enrollments
+		WHERE scode=#{scode}
+	</select>
+
+	<select id="countByCourse" resultType="int">
+		SELECT COUNT(lcode)
+		FROM tbl_enrollments
+		WHERE lcode=#{lcode}
+	</select>
+	
+	
 	<delete id="delete">
 		DELETE FROM tbl_enrollments
 		WHERE lcode=#{lcode} AND scode=#{scode}
@@ -25,6 +38,12 @@
 	<update id="update">
 		UPDATE tbl_enrollments
 		SET edate=#{eDate}, grade=#{grade}
+		WHERE lcode=#{lcode} AND scode=#{scode}
+	</update>
+	
+	<update id="updateGrade">
+		UPDATE tbl_enrollments
+		SET grade=#{grade}
 		WHERE lcode=#{lcode} AND scode=#{scode}
 	</update>
 	

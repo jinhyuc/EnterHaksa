@@ -24,6 +24,14 @@
 	border-top: none;
 }
 
+.left-select {
+	padding-right: 5px;
+}
+
+.right-select {
+	padding-left: 5px;
+}
+
 .add-picture {
 	margin-bottom: 20px;
 }

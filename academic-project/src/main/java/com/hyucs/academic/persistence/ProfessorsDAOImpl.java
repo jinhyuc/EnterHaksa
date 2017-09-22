@@ -23,6 +23,11 @@ public class ProfessorsDAOImpl implements ProfessorsDAO {
 	}
 	
 	@Override
+	public List<ProfessorsVO> listByDepartment(String dept) throws Exception {
+		return session.selectList(namespace + ".listByDepartment", dept);
+	}
+	
+	@Override
 	public void create(ProfessorsVO vo) throws Exception {
 		session.insert(namespace + ".insert", vo);		
 	}

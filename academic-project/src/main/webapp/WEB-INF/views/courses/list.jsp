@@ -49,7 +49,7 @@
 			<br>
 			<div class="row">
 				<div class="table-responsive">
-					<table class="table table-hover table-bordered">
+					<table class="table table-hover list-table">
 						<thead>
 							<tr>
 								<th>강좌번호</th>
@@ -96,11 +96,36 @@
 		</div>
 	</div>
 	<jsp:include page="../include/footer.jsp" />
+	<div class="layer alert-layer">
+		<div class="layer-bg">
+		</div>
+		<div id="alert-pop" class="pop-layer">
+			<div class="pop-container">
+				<div class="pop-contents">
+					<div class="row div-popmsg">
+						<h4 class="col-md-1">
+							<span class="glyphicon glyphicon-info-sign"> </span>
+						</h4>
+						<h4 class="col-md-11 message">
+						
+						</h4>
+					</div>
+					
+					<div class="div-popbtn">
+						<button type="button" class="btn btn-default ok">
+							<span class="glyphicon glyphicon-ok"> </span> &nbsp;확인
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/resources/js/layerpopup.js"></script>
 </body>
 <script>
 	$(document).ready(function() {
@@ -120,14 +145,16 @@
 	});
 	
 	var result="${result}";
+	var $el_alert = $("#alert-pop");
+	
 	if(result == "CREATE-SUCCESS") {
-		alert("강좌등록이 완료 되었습니다.");
+		layer_popup.alert($el_alert, "강좌 등록이 완료 되었습니다.");
 	} else if(result == "CREATE-FAIL") {
-		alert("강좌등록이 실패 하였습니다.");
+		layer_popup.alert($el_alert, "강좌 등록이 실패 하였습니다.");
 	} else if(result == "MODIFY-SUCCESS") {
-		alert("강좌수정이 완료 되었습니다.");
+		layer_popup.alert($el_alert, "강좌 정보가 수정 되었습니다.");
 	} else if(result == "REMOVE-SUCCESS") {
-		alert("강좌삭제가 완료 되었습니다.");
+		layer_popup.alert($el_alert, "강좌 정보가 삭제 되었습니다.");
 	}
 </script>
 </html>

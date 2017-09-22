@@ -10,6 +10,7 @@
 <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="/resources/stylesheets/style.css?ver=170825_10" rel="stylesheet">
 <link href="/resources/stylesheets/professors.css?ver=170828_2" rel="stylesheet">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 <body>
 	<div class="container-fluid">
@@ -31,23 +32,12 @@
 					<input id="input-profname" type="text" name="pname" class="form-control" placeholder="교수이름을 입력하세요">
 				</div>
 				<div class="form-group">
-					<label for="select-profdept">소속학과</label>
-					<select id="select-profdept" name="dept" class="form-control">
-						<option value="전산">전산</option>
-						<option value="전자">전자</option>
-						<option value="건축">건축</option>
-					</select>
+					<label>소속학과</label>
+					<input id="input-profdept" type="text" name="dept" class="form-control" placeholder="학과선택은 여기를 클릭하세요.." readonly>
 				</div>
 				<div class="form-group">
 					<label>임용일자</label>
-					<div class="form-inline">
-						<select id="prof-year" name="hire_yy" class="form-control" onChange="setDay()"></select>
-							년&nbsp;&nbsp; 
-						<select id="prof-month" name="hire_mm" class="form-control" onChange="setDay()"></select>
-							월&nbsp;&nbsp; 
-						<select id="prof-day" name="hire_dd" class="form-control"></select>
-							일
-					</div>
+					<input id="input-hiredate" type="text" name="hireDate" class="form-control" readonly>
 				</div>
 				<div class="form-group">
 					<label>직급</label>
@@ -94,7 +84,7 @@
 					<button type="submit" class="btn btn-success">
 						<span class="glyphicon glyphicon-ok"> </span> &nbsp;저장
 					</button>
-					<button type="reset" class="btn btn-danger">
+					<button id="btn-cancel" type="button" class="btn btn-danger">
 						<span class="glyphicon glyphicon-remove"> </span> &nbsp;취소
 					</button>
 				</div>
@@ -103,9 +93,60 @@
 
 	</div>
 	<jsp:include page="../include/footer.jsp" />
+	<!-- Modal -->
+	<div class="modal fade" id="modal-dlist" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header modal-header-info">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</button>
+					<h2><i class="glyphicon glyphicon-book"></i> 학과 목록</h2>
+				</div>
+				<div id="div-departmentList" class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<div class="col-md-6 col-lg-6">
+								<select id="select-college" class="form-control">
+									<option selected="" disabled="" hidden="" value=""> 대학 분류를 선택해주세요. </option>
+									<option value="인문대학">인문대학</option>
+									<option value="사회과학대학">사회과학대학</option>
+									<option value="자연과학대학">자연과학대학</option>
+									<option value="간호대학">간호대학</option>
+									<option value="경영대학">경영대학</option>
+									<option value="공과대학">공과대학</option>
+									<option value="농업생명과학대학">농업생명과학대학</option>
+									<option value="미술대학">미술대학</option>
+									<option value="법과대학">법과대학</option>
+									<option value="사범대학">사범대학</option>
+									<option value="생활과학대학">생활과학대학</option>
+									<option value="수의과대학">수의과대학</option>
+									<option value="약학대학">약학대학</option>
+									<option value="음악대학">음악대학</option>
+									<option value="의과대학">의과대학</option>
+								</select>
+							</div>
+						</div>
+					</form>
+					<div class="modal-list">
+                    	<ul id="departmentsList" class="list-group">
+                    
+                    	</ul>
+                    </div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">
+						<span class="glyphicon glyphicon-remove"> </span> &nbsp;닫기
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
@@ -124,31 +165,52 @@
 	</div>
 </li>
 </script>
+
+<script id="template-departments" type="text/x-handlebars-template">
+{{#each .}}
+	<li class="list-group-item">{{dname}}</li>
+{{/each}}
+</script>
+
 <script>
+var formObj = $("#form-create-prof");
+
 $(document).ready(function() {
-	var frm = document.getElementById('form-create-prof');
-	var curDate = new Date();
-	var curYear = curDate.getFullYear();
-	var curMonth = eval(curDate.getMonth()) + 1;
-	var curDay = eval(curDate.getDate());
+	$.datepicker.regional['ko'] = {
+		closeText: '닫기',
+		prevText: '이전',
+		nextText: '다음',
+		currentText: '오늘',
+		monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+		monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'],
+		dayNames: ['일','월','화','수','목','금','토'],
+		dayNamesShort: ['일','월','화','수','목','금','토'],
+		dayNamesMin: ['일','월','화','수','목','금','토'],
+		weekHeader: 'Wk',
+		dateFormat: 'yy-mm-dd',
+		firstDay: 0,
+		isRTL: false,
+		showMonthAfterYear: true,
+		yearSuffix: '년'
+	};
+		
+	$.datepicker.setDefaults($.datepicker.regional['ko']);
+		
+	$("#input-hiredate").datepicker();
 	
-	var startYear = curYear - 47;
-	for(var i=0; i<48; i++) {
-		frm['hire_yy'].options[i] = new Option(startYear+i, startYear+i);
-	}
+	$("#btn-cancel").on("click", function(event) {
+		formObj.attr("action", "/professors/list");
+		formObj.attr("method", "get");
+		formObj.submit();
+	});
 	
-	for(var i=0; i<12; i++) {
-		frm['hire_mm'].options[i] = new Option(i+1, i+1);
-	}
-	
-	frm['hire_yy'].value = curYear;
-	frm['hire_mm'].value = curMonth;
-	setDay();
-	frm['hire_dd'].value = curDay;
+	$("#input-profdept").on("click", function(event) {
+		$("#modal-dlist").modal();
+	});
 	
 	var template = Handlebars.compile($("#template-pic").html());
 	
-	$(".picture-input input:file").change(function (){          
+	$(".picture-input input:file").change(function (event){          
 		var file = this.files[0];
 		
 		$(".image-preview-filename").val(file.name);
@@ -205,40 +267,40 @@ $(document).ready(function() {
 		
 		var $this = $(this);
 		var str = "";
+		var fullname = $(".uploadedList .delbtn").data("fullname");
 		
-		str += "<input type='hidden' name='picture' value='" + $(".uploadedList .delbtn").data("fullname") + "'>";
-		
-		$this.append(str);
+		if(fullname) {
+			str += "<input type='hidden' name='picture' value='" + fullname + "'>";
+			
+			$this.append(str);
+		}
+		console.log($this);
 		
 		$this.get(0).submit();
 	});
+	
+	$("#departmentsList").on("click", "li", function(event) {
+		var dptname = $(this).text();
+		
+		$("#input-profdept").val(dptname);
+		$("#modal-dlist").modal('hide');
+	});
+	
+	$("#modal-dlist").on("hidden.bs.modal", function(event) {
+		$(this).find('form')[0].reset();
+		$("#departmentsList").empty();
+	});
+	
+	$("#select-college").change(function(event) {
+		var dpt_template = Handlebars.compile($("#template-departments").html());
+		var college = $("#select-college").val();
+		
+		$.getJSON("/departments/" + college, function(list) {
+			var html = dpt_template(list);
+			
+			$("#departmentsList").html(html);
+		});
+	});
 });
-	
-function setDay() {
-	var frm = document.getElementById('form-create-prof');
-	
-	var year = frm['hire_yy'].value;
-	var month = frm['hire_mm'].value;
-	var day = frm['hire_dd'].value;
-	var hireDay = frm['hire_dd'];
-	
-	var arrayMonth = [31,28,31,30,31,30,31,31,30,31,30,31];
-	
-	for(var i=hireDay.length; i>0; i--) {
-		hireDay.remove(hireDay.selectedIndex);
-	}
-	
-	for(var i=1; i<=arrayMonth[month-1]; i++) {
-		hireDay.options[i-1] = new Option(i, i);
-	}
-	
-	if(day!=null || day!="") {
-		if(day > arrayMonth[month-1]) {
-			hireDay.options.selectedIndex = arrayMonth[month-1]-1;
-		} else {
-			hireDay.options.selectedIndex = day - 1;
-		}
-	}
-}
 </script>
 </html>

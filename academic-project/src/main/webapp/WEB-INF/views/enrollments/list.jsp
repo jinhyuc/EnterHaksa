@@ -45,9 +45,10 @@
 			<br>
 			<div class="row">
 				<div class="table-responsive">
-					<table class="table table-hover table-bordered">
+					<table id="tbl-enroll" class="table list-table">
 						<thead>
 							<tr>
+								<th><input type="checkbox" id="checkall"></th>
 								<th>강좌번호</th>
 								<th>강좌명</th>
 								<th>학생번호</th>
@@ -58,15 +59,25 @@
 						</thead>
 						<c:forEach var="enroll" items="${list}">
 							<tr class="tr-enrollments">
-								<td id="td-lcode">${enroll.lcode}</td>
+								<td><input type="checkbox" data-lcode="${enroll.lcode}" data-scode="${enroll.scode}"></td>
+								<td>${enroll.lcode}</td>
 								<td>${enroll.lname}</td>
-								<td id="td-scode">${enroll.scode}</td>
+								<td>${enroll.scode}</td>
 								<td>${enroll.sname}</td>
 								<td>${enroll.eDate}</td>
-								<td>${enroll.grade} 점</td>
+								<td>
+									<c:if test="${enroll.grade != null}">
+										${enroll.grade} 점
+									</c:if>
+								</td>
 							</tr>
 						</c:forEach>
 					</table>
+				</div>
+				<div>
+					<button type="button" id="btn-del-enroll" class="btn btn-danger">
+						<span class="glyphicon glyphicon-trash"> </span> &nbsp;삭제
+					</button>
 				</div>
 			</div>
 			<div class="div-pagination text-center">
@@ -92,36 +103,136 @@
 		</div>
 	</div>
 	<jsp:include page="../include/footer.jsp" />
+	<!-- Layer popup -->
+	<div class="layer confirm-layer">
+		<div class="layer-bg">
+		</div>
+		<div id="confirm-pop" class="pop-layer">
+			<div class="pop-container">
+				<div class="pop-contents">
+					<div class="row div-popmsg">
+						<h4 class="col-md-1">
+							<span class="glyphicon glyphicon-warning-sign red"> </span>
+						</h4>
+						<h4 class="col-md-11 message">
+						
+						</h4>
+					</div>
+					
+					<div class="div-popbtn">
+						<button type="button" class="btn btn-default ok">
+							<span class="glyphicon glyphicon-ok"> </span> &nbsp;확인
+						</button>
+						<button type="button" class="btn btn-default cancel">
+							<span class="glyphicon glyphicon-remove"> </span> &nbsp;취소
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="layer alert-layer">
+		<div class="layer-bg">
+		</div>
+		<div id="alert-pop" class="pop-layer">
+			<div class="pop-container">
+				<div class="pop-contents">
+					<div class="row div-popmsg">
+						<h4 class="col-md-1">
+							<span class="glyphicon glyphicon-info-sign"> </span>
+						</h4>
+						<h4 class="col-md-11 message">
+						
+						</h4>
+					</div>
+					
+					<div class="div-popbtn">
+						<button type="button" class="btn btn-default ok">
+							<span class="glyphicon glyphicon-ok"> </span> &nbsp;확인
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/resources/js/layerpopup.js"></script>
 </body>
 <script>
-	$(document).ready(function() {
-		$("#btn-search-enroll").on("click", function(event) {
-			self.location = "/enrollments/list" + "${pageMaker.makeQuery(1)}" + "&searchType=" + $("select option:selected").val() + "&keyword=" + $("keywordInput").val();
-		});
-		
-		$("#btn-reg-enroll").on("click", function(event) {
-			self.location = "/enrollments/create";
-		});
-		
-		$(".tr-enrollments").on("click", function() {
-			var lcode = $(this).find("#td-lcode").html();
-			var scode = $(this).find("#td-scode").html();
-			
-			self.location="/enrollments/detail" + "${pageMaker.makeSearch(pageMaker.cri.page)}" + "&lcode=" + lcode + "&scode=" + scode;
-		});
+var $el_alert = $("#alert-pop");
+var $el_confirm = $("#confirm-pop");
+
+$(document).ready(function() {
+	$("#btn-search-enroll").on("click", function(event) {
+		self.location = "/enrollments/list" + "${pageMaker.makeQuery(1)}" + "&searchType=" + $("select option:selected").val() + "&keyword=" + $("keywordInput").val();
 	});
 	
-	var result="${result}";
-
-	if(result == "MODIFY-SUCCESS") {
-		alert("수강신청 수정이 완료 되었습니다.");
-	} else if(result == "REMOVE-SUCCESS") {
-		alert("수강신청 삭제가 완료 되었습니다.");
-	}
+	$("#checkall").on("click", function(event) {
+		if($("#checkall").is(":checked")) {
+			$("#tbl-enroll input[type=checkbox]").each(function () {
+                $(this).prop("checked", true);
+            });
+		} else {
+			$("#tbl-enroll input[type=checkbox]").each(function () {
+                $(this).prop("checked", false);
+            });
+		}
+	});
+	
+	$("#btn-del-enroll").on("click", function(event) {
+		var checked_count = 0;
+		var enrollArray = new Array();
+		var checkedEnrollJson = new Object();
+		
+		$("#tbl-enroll td>input[type=checkbox]").each(function() {
+			var lcode = $(this).data("lcode");
+			var scode = $(this).data("scode");
+			
+			if($(this).is(":checked")) {
+				var enrollObj = new Object();
+				
+				enrollObj.lcode = lcode;
+				enrollObj.scode = scode;
+				
+				enrollArray.push(enrollObj);
+				
+				console.log("lcode : " + lcode);
+				console.log("scode : " + scode);
+				
+				checked_count++;
+			}	
+		});
+		
+		if(checked_count == 0) {
+			layer_popup.alert($el_alert, "선택된 항목이 없습니다.");
+		} else {
+			layer_popup.confirm($el_confirm, "선택된 항목들을 삭제하시겠습니까?", function(event) {
+				checkedEnrollJson = JSON.stringify(enrollArray);
+				
+				console.log("checked_count : " + checked_count);
+				
+				$.ajax({
+					type: "delete",
+					url: "/enrollments/delete",
+					headers: {
+						"Content-Type": "application/json",
+						"X-HTTP-Method-Override": "DELETE" },
+					data: checkedEnrollJson,
+					dataType: "text",
+					success: function(result) {
+						console.log("enroll delete result : " + result);
+						if(result == "SUCCESS") {					
+							 location.reload();
+						}
+					}
+				});
+			});
+		}
+	});
+});
 </script>
 </html>

@@ -25,7 +25,7 @@
 				</ol>
 			</div>
 			<div class="row">
-				<form role="form" action="/professors/modify" method="post">
+				<form id="modifyfrm" role="form" action="/professors/modify" method="post">
 					<input type="hidden" name="pcode" value="${pvo.pcode}">
 					<input type="hidden" name="page" value="${cri.page}">
 					<input type="hidden" name="perPageNum" value="${cri.perPageNum}">
@@ -38,7 +38,7 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
-							<div class="col-md-3 col-lg-3" align="center">
+							<div class="col-md-3 col-lg-3">
 								<img id="prof-picture" alt="Professor picture" class="img-responsive">
 							</div>
 							<div class="col-md-9 col-lg-9">
@@ -84,34 +84,45 @@
 				</div>
 			</div>
 			<div class="row">
-				<button type="button" id="btn-enroll-prof" class="btn btn-primary" data-toggle="collapse" data-target="#div-enroll">
-					<span class="glyphicon glyphicon-chevron-down">  </span> &nbsp;담당강좌
+				<button type="button" id="btn-enroll-prof" class="btn btn-primary" data-toggle="collapse" data-target="#div-lecture">
+					<span class="glyphicon glyphicon-chevron-down">  </span> &nbsp;성적입력
 				</button>
 				<button type="button" id="btn-profList" class="btn btn-primary pull-right">
 					<span class="glyphicon glyphicon-list">  </span> &nbsp;목록으로
 				</button>
 			</div>
 			<div class="row">
-				<div class="box box-success">
-					<div class="box-header">
-						<h3 class="box-title">담당강좌 목록</h3>
+				<div id="div-lecture" class="collapse">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<form class="form-horizontal" role="form">
+								<div class="form-group">
+									<label class="col-md-2 col-lg-2 control-label">담당강좌</label>
+									<div class="col-md-6 col-lg-6">
+										<select id="select-lectureList" class="form-control">
+												<option selected="" disabled="" hidden="" value="">담당강좌를 선택해주세요.</option>
+												<c:forEach items="${clistByProf}" var="cvo" varStatus="status">
+													<option value="${cvo.lcode}"> ${cvo.lcode} : ${cvo.lname}</option>
+												</c:forEach>
+										</select>
+									</div>
+									<div class="col-md-2 col-lg-2">
+										<button id="btn-studentList" type="button" class="btn btn-success">
+											<span class="glyphicon glyphicon-ok"> </span> &nbsp;학생목록
+										</button>
+									</div>
+								</div>
+							</form>
+						</div>
 					</div>
-					<div class="box-body">
-						<div class="panel-group" id="accordion">
-	      					<c:forEach items="${clistByProf}" var="cvo" varStatus="status">
-	      						<div class="panel panel-default">
-	      							<div class="panel-heading">
-	      								<h4 class="panel-title">
-	      									<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#${cvo.lcode}" onclick="getStudentsList('${cvo.lcode}')">
-	      										[${cvo.lcode}] ${cvo.lname}
-	      									</a>
-	      								</h4>
-	      							</div>
-	      							<div id="${cvo.lcode}" class="panel-collapse collapse">
-	      							
-	      							</div>
-	      						</div>
-	      					</c:forEach>
+					<div id="box-studentList" class="box box-warning">
+						<div class="box-header">
+							<h3 class="box-title">수강학생 목록</h3>
+						</div>
+						<div class="box-body">
+							<div id="div-studentlList">
+		      							
+		      				</div>
 						</div>
 					</div>
 				</div>
@@ -119,7 +130,8 @@
 		</div>
 	</div>
 	<jsp:include page="../include/footer.jsp" />
-		<div class="layer confirm-layer">
+	<!-- Layer popup -->
+	<div class="layer confirm-layer">
 		<div class="layer-bg">
 		</div>
 		<div id="confirm-pop" class="pop-layer">
@@ -146,6 +158,58 @@
 			</div>
 		</div>
 	</div>
+	<div class="layer alert-layer">
+		<div class="layer-bg">
+		</div>
+		<div id="alert-pop" class="pop-layer">
+			<div class="pop-container">
+				<div class="pop-contents">
+					<div class="row div-popmsg">
+						<h4 class="col-md-1">
+							<span class="glyphicon glyphicon-info-sign"> </span>
+						</h4>
+						<h4 class="col-md-11 message">
+						
+						</h4>
+					</div>
+					
+					<div class="div-popbtn">
+						<button type="button" class="btn btn-default ok">
+							<span class="glyphicon glyphicon-ok"> </span> &nbsp;확인
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="modal-grade" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header modal-header-success">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</button>
+					<h2><i class="glyphicon glyphicon-info-sign"></i> 성적입력</h2>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label id="label-grade" for="input-grade"></label>
+						<input type="text" class="form-control" id="input-grade" placeholder="성적을 입력하세요">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button id="btn-grade-ok" type="button" class="btn btn-default">
+						<span class="glyphicon glyphicon-ok"> </span> &nbsp;확인
+					</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">
+						<span class="glyphicon glyphicon-remove"> </span> &nbsp;취소
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -156,50 +220,46 @@
 	<script src="/resources/js/layerpopup.js"></script>
 </body>
 <script id="template-stlist" type="text/x-handlebars-template">
-	<div class="panel-body studentsDiv">
-		<table class="table table-bordered">
-			<thead>
-				<tr>
-					<th>학생번호</th>
-					<th>학생이름</th>
-					<th>소속학과</th>
-					<th>학년</th>
-					<th>지도교수</th>
-					<th>성적입력</th>
-				</tr>
-			</thead>
-			<tbody>
-			{{#each .}}
-				<tr>
-					<td>{{scode}}</td>
-					<td>{{sname}}</td>
-					<td>{{dept}}</td>
-					<td>{{year}}</td>
-					<td>{{pname}}</td>
-					<td>
-						<button type="button" class="btn btn-danger">
-							<span class="glyphicon glyphicon-pencil"> </span>
-						</button>
-					</td>
-				</tr>
-			{{/each}}
-			</tbody>
-		</table>
-	</div>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th class="text-center">학생번호</th>
+				<th class="text-center">학생이름</th>
+				<th class="text-center">소속학과</th>
+				<th class="text-center">학년</th>
+				<th class="text-center">지도교수</th>
+				<th class="text-center">성적입력</th>
+			</tr>
+		</thead>
+		<tbody>
+		{{#each .}}
+			<tr>
+				<td class="text-center">{{scode}}</td>
+				<td class="text-center">{{sname}}</td>
+				<td class="text-center">{{dept}}</td>
+				<td class="text-center">{{year}} 학년</td>
+				<td class="text-center">{{pname}}</td>
+				<td class="col-md-1">
+					<input type="text" data-scode="{{scode}}" data-sname="{{sname}}" class="student-grade form-control" value="{{grade}}" readonly>
+				</td>
+			</tr>
+		{{/each}}
+		</tbody>
+	</table>
 </script>
 <script>
 var pcode = "${pvo.pcode}";
+var $lcode;
 
-var printList = function(list, target, templateObj) {
+var printList = function(list, templateObj) {
 	var template = Handlebars.compile(templateObj.html());
 	var html = template(list);
 	
-	$(".studentsDiv").remove();
-	target.after(html);
+	$("#div-studentlList").html(html);
 }
 
 $(document).ready(function() {
-	var formObj = $("form[role='form']");
+	var formObj = $("#modifyfrm");
 	
 	initPicture();
 		
@@ -217,23 +277,88 @@ $(document).ready(function() {
 		
 	$("#btn-delete-prof").on("click", function(event) {
 		var $el_confirm = $("#confirm-pop");
+		var $el_alert = $("#alert-pop");
 		
-		layer_popup.confirm($el_confirm, "교수 정보를 삭제하시겠습니까?", function() {
-			deletePicture();
-			formObj.attr("action", "/professors/remove");
-			formObj.submit();
-		})
+		$.getJSON("/courses/countByProf/" + pcode, function(data) {
+			console.log(data.count);
+			
+			if(data.count > 0) {
+				layer_popup.alert($el_alert, "강좌 담당교수로 등록되어 있는 교수는 삭제할 수 없습니다.");
+			} else {
+				$.getJSON("/students/countByProf/" + pcode, function(data) {
+					console.log(data.count);
+					
+					if(data.count > 0) {
+						layer_popup.alert($el_alert, "지도교수로 등록되어 있는 교수는 삭제할 수 없습니다.");
+					} else {
+						layer_popup.confirm($el_confirm, "교수 정보를 삭제하시겠습니까?", function() {
+							deletePicture();
+							formObj.attr("action", "/professors/remove");
+							formObj.submit();
+						});
+					}
+				});
+			}
+		});
+	});
+	
+	$("#btn-studentList").on("click", function(event) {
+		$lcode = $("#select-lectureList option:selected").val();
+		console.log($lcode);
+		
+		if($lcode) {
+			getStudentsList($lcode);
+		}
+	});
+	
+	$("#div-studentlList").on("click", ".student-grade", function(event) {
+		var label = $(this).data("scode") + " - " + $(this).data("sname");
+		var grade = $(this).val();
+		
+		$("#label-grade").html(label);
+		$("#input-grade").val(grade);
+		$("#btn-grade-ok").data("scode", $(this).data("scode"));
+		$("#btn-grade-ok").data("lcode", $lcode);
+		
+		$("#modal-grade").modal();
+	});
+	
+	$("#btn-grade-ok").on("click", function(event) {
+		var scode = $(this).data("scode");
+		var lcode = $(this).data("lcode");
+		var grade = $("#input-grade").val();
+		
+		$.ajax({
+			type: "post",
+			url: "/enrollments/grade/",
+			headers: {
+				"Content-Type": "application/json",
+				"X-HTTP-Method-Override": "POST" },
+			dataType: "text",
+			data: JSON.stringify({
+				lcode:lcode,
+				scode:scode,
+				grade:grade
+			}),
+			success: function(result) {
+				console.log("grade result: " + result);
+				if(result == "SUCCESS") {
+					getStudentsList(lcode);
+					$("#modal-grade").modal('hide');
+				}
+			}
+		});
 	});
 });
 	
 function getStudentsList(lcode) {
 	console.log(lcode);
-	var target = "#" + lcode;
 	
 	$.getJSON("/students/listByCourse/" + lcode, function(data) {
 		console.log(data.list.length);
 		console.log(data.list);
-		printList(data.list, $(target), $('#template-stlist'));
+		
+		printList(data.list, $('#template-stlist'));
 	});
 }
 

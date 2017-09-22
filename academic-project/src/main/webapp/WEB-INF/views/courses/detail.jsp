@@ -32,84 +32,236 @@
 					<input type="hidden" name="searchType" value="${cri.searchType}">
 					<input type="hidden" name="keyword" value="${cri.keyword}">
 				</form>
-				<div class="table-responsive">
-					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>강좌번호</th>
-								<th>강좌명</th>
-								<th>강의시간 수</th>
-								<th>강의실</th>
-								<th>담당교수</th>	
-								<th>최대 수강인원 수</th>	
-								<th>수강신청 인원 수</th>	
-							</tr>
-						</thead>
-						<tbody>
-							<tr class="active">
-								<td>${cvo.lcode}</td>
-								<td>${cvo.lname}</td>
-								<td>${cvo.hours} 시간</td>
-								<td>${cvo.room} 호</td>
-								<td>${cvo.instructor}: ${cvo.pname}</td>
-								<td>${cvo.capacity} 명</td>
-								<td>${cvo.persons} 명</td>
-							</tr>
-						</tbody>
-					</table>
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<h2 class="panel-title">강좌 정보</h2>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-3 col-lg-3">
+								<img id="course-picture" src="/resources/imgs/book.png" alt="Course picture" class="img-responsive">
+							</div>
+							<div class="col-md-9 col-lg-9">
+								<table class="table table-course-information">
+									<tbody>
+										<tr>
+											<td class="col-md-2"><strong>강좌번호:</strong></td>
+											<td>${cvo.lcode}</td>
+										</tr>
+										<tr>
+											<td class="col-md-2"><strong>강좌명:</strong></td>
+											<td>${cvo.lname}</td>
+										</tr>
+										<tr>
+											<td class="col-md-2"><strong>강의시간 수:</strong></td>
+											<td>${cvo.hours} 시간</td>
+										</tr>
+										<tr>
+											<td class="col-md-2"><strong>강의실:</strong></td>
+											<td>${cvo.room} 호</td>
+										</tr>
+										<tr>
+											<td class="col-md-2"><strong>담당교수:</strong></td>
+											<td>${cvo.pname} [${cvo.instructor}]</td>
+										</tr>
+										<tr>
+											<td class="col-md-2"><strong>최대수강 인원 수:</strong></td>
+											<td>${cvo.capacity} 명</td>
+										</tr>
+										<tr>
+											<td class="col-md-2"><strong>수강신청 인원 수:</strong></td>
+											<td>${cvo.persons} 명</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="panel-footer">
+						<button type="button" id="btn-modify-course" class="btn btn-warning">
+							<i class="glyphicon  glyphicon-edit"> </i> &nbsp;수정
+						</button>
+						<button type="button" id="btn-delete-course" class="btn btn-danger">
+							<i class="glyphicon glyphicon-remove"> </i> &nbsp;삭제
+						</button>
+					</div>
 				</div>
 			</div>
 			<div class="row">
-				<button type="button" id="btn-modify-course" class="btn btn-warning">
-					<span class="glyphicon  glyphicon-pencil"> </span> &nbsp;강좌수정
-				</button>
-				<button type="button" id="btn-delete-course" class="btn btn-danger">
-					<span class="glyphicon glyphicon-remove">  </span> &nbsp;강좌삭제
-				</button>
-				<button type="button" id="btn-grade-course" class="btn btn-info">
-					<span class="glyphicon glyphicon-font">  </span> &nbsp;성적입력
+				<button type="button" id="btn-studentList" class="btn btn-primary" data-toggle="collapse" data-target="#div-student">
+					<span class="glyphicon glyphicon-chevron-down">  </span> &nbsp;수강학생 목록
 				</button>
 				<button type="button" id="btn-courseList" class="btn btn-primary pull-right">
 					<span class="glyphicon glyphicon-list">  </span> &nbsp;목록으로
 				</button>
 			</div>
+			<div class="row">
+				<div id="div-student" class="collapse">
+					<div id="box-studentList" class="box box-warning">
+						<div class="box-header">
+							<h3 class="box-title">수강학생 목록</h3>
+						</div>
+						<div class="box-body">
+							<div id="div-studentlList">
+		      							
+		      				</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<jsp:include page="../include/footer.jsp" />
+	
+	<!-- Layer popup -->
+	<div class="layer confirm-layer">
+		<div class="layer-bg">
+		</div>
+		<div id="confirm-pop" class="pop-layer">
+			<div class="pop-container">
+				<div class="pop-contents">
+					<div class="row div-popmsg">
+						<h4 class="col-md-1">
+							<span class="glyphicon glyphicon-warning-sign red"> </span>
+						</h4>
+						<h4 class="col-md-11 message">
+						
+						</h4>
+					</div>
+					
+					<div class="div-popbtn">
+							<button type="button" class="btn btn-default ok">
+								<span class="glyphicon glyphicon-ok"> </span> &nbsp;확인
+							</button>
+							<button type="button" class="btn btn-default cancel">
+								<span class="glyphicon glyphicon-remove"> </span> &nbsp;취소
+							</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="layer alert-layer">
+		<div class="layer-bg">
+		</div>
+		<div id="alert-pop" class="pop-layer">
+			<div class="pop-container">
+				<div class="pop-contents">
+					<div class="row div-popmsg">
+						<h4 class="col-md-1">
+							<span class="glyphicon glyphicon-warning-sign red"> </span>
+						</h4>
+						<h4 class="col-md-11 message">
+						
+						</h4>
+					</div>
+					
+					<div class="div-popbtn">
+						<button type="button" class="btn btn-default ok">
+							<span class="glyphicon glyphicon-ok"> </span> &nbsp;확인
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<script src="/resources/js/layerpopup.js"></script>
 </body>
+<script id="template-stlist" type="text/x-handlebars-template">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th class="text-center">학생번호</th>
+				<th class="text-center">학생이름</th>
+				<th class="text-center">소속학과</th>
+				<th class="text-center">학년</th>
+				<th class="text-center">지도교수</th>
+				<th class="text-center">성적</th>
+			</tr>
+		</thead>
+		<tbody>
+		{{#each .}}
+			<tr>
+				<td class="text-center">{{scode}}</td>
+				<td class="text-center">{{sname}}</td>
+				<td class="text-center">{{dept}}</td>
+				<td class="text-center">{{year}} 학년</td>
+				<td class="text-center">{{pname}}</td>
+				<td class="text-center">{{grade}}</td>
+			</tr>
+		{{/each}}
+		</tbody>
+	</table>
+</script>
 <script>
-	$(document).ready(function() {
-		var formObj = $("form[role='form']");
+var lcode = "${cvo.lcode}";
+
+var printList = function(list, templateObj) {
+	var template = Handlebars.compile(templateObj.html());
+	var html = template(list);
+	
+	$("#div-studentlList").html(html);
+}
+
+$(document).ready(function() {
+	var formObj = $("form[role='form']");
+	
+	$("#btn-courseList").on("click", function(event) {
+		formObj.attr("action", "/courses/list");
+		formObj.attr("method", "get");
+		formObj.submit();
+	});
+	
+	$("#btn-modify-course").on("click", function(event) {
+		formObj.attr("action", "/courses/modify");
+		formObj.attr("method", "get");
+		formObj.submit();
+	});
+	
+	$("#btn-grade-course").on("click", function(event) {
+		formObj.attr("action", "/courses/grade");
+		formObj.attr("method", "get");
+		formObj.submit();
+	});
+	
+	$("#btn-delete-course").on("click", function(event) {
+		var $el_confirm = $("#confirm-pop");
+		var $el_alert = $("#alert-pop");
 		
-		$("#btn-courseList").on("click", function(event) {
-			formObj.attr("action", "/courses/list");
-			formObj.attr("method", "get");
-			formObj.submit();
-		});
-		
-		$("#btn-modify-course").on("click", function(event) {
-			formObj.attr("action", "/courses/modify");
-			formObj.attr("method", "get");
-			formObj.submit();
-		});
-		
-		$("#btn-grade-course").on("click", function(event) {
-			formObj.attr("action", "/courses/grade");
-			formObj.attr("method", "get");
-			formObj.submit();
-		});
-		
-		$("#btn-delete-course").on("click", function(event) {
-			formObj.attr("action", "/courses/remove");
-			formObj.submit();
+		$.getJSON("/enrollments/countByCourse/" + lcode, function(data) {
+			console.log(data.count);
+			
+			if(data.count > 0) {
+				layer_popup.alert($el_alert, "수강신청에 등록된 강좌는 삭제할 수 없습니다.");
+			} else {
+				layer_popup.confirm($el_confirm, "강좌 정보를 삭제하시겠습니까?", function() {
+					formObj.attr("action", "/courses/remove");
+					formObj.submit();
+				});
+			}
 		});
 	});
+	
+	$("#btn-studentList").on("click", function(event) {
+		getStudentsList(lcode);
+	});
+});
 
+function getStudentsList(lcode) {
+	console.log(lcode);
+	
+	$.getJSON("/students/listByCourse/" + lcode, function(data) {
+		console.log(data.list.length);
+		console.log(data.list);
+		
+		printList(data.list, $('#template-stlist'));
+	});
+}
 </script>
-
 </html>

@@ -59,4 +59,9 @@ public class CoursesServiceImpl implements CoursesService {
 	public List<CoursesVO> listByStudent(String scode) throws Exception {
 		return dao.listByStudent(scode);
 	}
+
+	@Override
+	public int countByProf(String instructor) throws Exception {
+		return dao.countByProf(instructor);
+	}
 }

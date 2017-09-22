@@ -26,6 +26,7 @@ import com.hyucs.academic.domain.ProfessorsVO;
 import com.hyucs.academic.domain.SearchCriteria;
 import com.hyucs.academic.service.CoursesService;
 import com.hyucs.academic.service.ProfessorsService;
+import com.hyucs.academic.service.StudentsService;
 
 @Controller
 @RequestMapping("/professors/*")
@@ -37,6 +38,10 @@ public class ProfessorsController {
 	
 	@Inject
 	private CoursesService cservice;
+	
+	@Inject
+	private StudentsService stservice;
+	
 	
 	@RequestMapping(value="/list", method=RequestMethod.GET)
 	public void listGet(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
@@ -60,13 +65,11 @@ public class ProfessorsController {
 	}
 	
 	@RequestMapping(value="/create", method=RequestMethod.POST)
-	public String registPOST(ProfessorsVO vo, String hire_yy, String hire_mm, String hire_dd, RedirectAttributes rttr) throws Exception {
+	public String registPOST(ProfessorsVO vo, RedirectAttributes rttr) throws Exception {
 		if(service.read(vo.getPcode()) != null) {
-			rttr.addFlashAttribute("result", "CREATE-FAIL");
+			rttr.addFlashAttribute("result", "CREATE-DUPLICATE");
 			return "redirect:/professors/list";
 		}
-		
-		vo.setHireDate(Date.valueOf(hire_yy + "-" + hire_mm + "-" + hire_dd));
 		
 		service.create(vo);
 		logger.info("create POST........");
@@ -89,17 +92,12 @@ public class ProfessorsController {
 	@RequestMapping(value="/modify", method=RequestMethod.GET)
 	public void modifyGET(@RequestParam("pcode") String pcode, @ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
 		ProfessorsVO vo = service.read(pcode);
-		String hireDate = vo.getHireDate().toString();
 		
-		model.addAttribute("pvo", vo);
-		model.addAttribute("yy", hireDate.substring(0, 4));
-		model.addAttribute("mm", hireDate.substring(5, 7));
-		model.addAttribute("dd", hireDate.substring(8, 10));		
+		model.addAttribute("pvo", vo);		
 	}
 	
 	@RequestMapping(value="/modify", method=RequestMethod.POST)
-	public String modifyPOST(ProfessorsVO vo, SearchCriteria cri, String hire_yy, String hire_mm, String hire_dd, RedirectAttributes rttr) throws Exception {
-		vo.setHireDate(Date.valueOf(hire_yy + "-" + hire_mm + "-" + hire_dd));
+	public String modifyPOST(ProfessorsVO vo, SearchCriteria cri, RedirectAttributes rttr) throws Exception {
 		logger.info(vo.toString());
 		
 		service.modify(vo);
@@ -117,6 +115,7 @@ public class ProfessorsController {
 	
 	@RequestMapping(value="/remove", method=RequestMethod.POST)
 	public String removePOST(@RequestParam("pcode") String pcode, SearchCriteria cri, RedirectAttributes rttr) throws Exception {
+		
 		service.remove(pcode);
 		
 		rttr.addAttribute("page", cri.getPage());
@@ -175,5 +174,19 @@ public class ProfessorsController {
 		service.addPicture(fileName, pcode);
 		
 		return new ResponseEntity<String>("added", HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/{dept}", method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<List<ProfessorsVO>> listByDepartment(@PathVariable("dept") String dept) {
+		ResponseEntity<List<ProfessorsVO>> entity = null;
+		
+		try {
+			entity = new ResponseEntity<>(service.listByDepartment(dept), HttpStatus.OK);			
+		} catch(Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return entity;
 	}
 }

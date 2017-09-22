@@ -8,6 +8,8 @@ import com.hyucs.academic.domain.SearchCriteria;
 public interface ProfessorsService {
 	public List<ProfessorsVO> listAll() throws Exception;
 	
+	public List<ProfessorsVO> listByDepartment(String dept) throws Exception;
+	
 	public void create(ProfessorsVO vo) throws Exception;
 	
 	public ProfessorsVO read(String pcode) throws Exception;

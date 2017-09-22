@@ -23,4 +23,6 @@ public interface CoursesService {
 	public List<CoursesVO> listByProf(String pcode) throws Exception;
 	
 	public List<CoursesVO> listByStudent(String scode) throws Exception;
+	
+	public int countByProf(String instructor) throws Exception;
 }

@@ -82,4 +82,9 @@ public class StudentsDAOImpl implements StudentsDAO {
 	public void deletePictureByFilename(String fileName) throws Exception {
 		session.delete(namespace + ".deletePicByFilename", fileName);		
 	}
+
+	@Override
+	public int countByProf(String advisor) throws Exception {
+		return session.selectOne(namespace + ".countByProf", advisor);
+	}
 }

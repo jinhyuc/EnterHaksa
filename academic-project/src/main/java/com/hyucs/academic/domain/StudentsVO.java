@@ -11,6 +11,7 @@ public class StudentsVO {
 	private String advisor;
 	private String pname;
 	private String picture;
+	private Integer grade;
 	
 	public String getScode() {
 		return scode;
@@ -60,10 +61,17 @@ public class StudentsVO {
 	public void setPicture(String picture) {
 		this.picture = picture;
 	}
+	public Integer getGrade() {
+		return grade;
+	}
+	public void setGrade(Integer grade) {
+		this.grade = grade;
+	}
 	
 	@Override
 	public String toString() {
 		return "StudentsVO [scode=" + scode + ", sname=" + sname + ", dept=" + dept + ", year=" + year + ", birthday="
-				+ birthday + ", advisor=" + advisor + ", pname=" + pname + ", picture=" + picture + "]";
+				+ birthday + ", advisor=" + advisor + ", pname=" + pname + ", picture=" + picture + ", grade=" + grade
+				+ "]";
 	}
 }

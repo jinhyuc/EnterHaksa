@@ -8,7 +8,7 @@ public class EnrollmentsVO {
 	private String scode;
 	private String sname;
 	private Date eDate;
-	private int grade;
+	private Integer grade;
 	
 	public String getLcode() {
 		return lcode;
@@ -40,10 +40,10 @@ public class EnrollmentsVO {
 	public void seteDate(Date eDate) {
 		this.eDate = eDate;
 	}
-	public int getGrade() {
+	public Integer getGrade() {
 		return grade;
 	}
-	public void setGrade(int grade) {
+	public void setGrade(Integer grade) {
 		this.grade = grade;
 	}
 	

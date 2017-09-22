@@ -11,6 +11,7 @@
 <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="/resources/stylesheets/style.css?ver=170825_10" rel="stylesheet">
 <link href="/resources/stylesheets/students.css?ver=170831" rel="stylesheet">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 <body>
 	<div class="container-fluid">
@@ -32,12 +33,8 @@
 					<input id="input-studentname" type="text" name="sname" class="form-control" placeholder="학생이름을 입력하세요">
 				</div>
 				<div class="form-group">
-					<label for="select-studentdept">소속학과</label>
-					<select id="select-studentdept" name="dept" class="form-control">
-						<option value="전산">전산</option>
-						<option value="전자">전자</option>
-						<option value="건축">건축</option>
-					</select>
+					<label>소속학과</label>
+					<input id="input-studentdept" type="text" name="dept" class="form-control" placeholder="학과선택은 여기를 클릭하세요.." readonly>
 				</div>
 				<div class="form-group">
 					<label for="select-studentyear">학년</label>
@@ -50,22 +47,11 @@
 				</div>
 				<div class="form-group">
 					<label>생년월일</label>
-					<div class="form-inline">
-						<select id="student-year" name="birth_yy" class="form-control" onChange="setDay()"></select>
-							년&nbsp;&nbsp; 
-						<select id="student-month" name="birth_mm" class="form-control" onChange="setDay()"></select>
-							월&nbsp;&nbsp; 
-						<select id="student-day" name="birth_dd" class="form-control"></select>
-							일
-					</div>
+					<input id="input-birthday" type="text" name="birthday" class="form-control" readonly>
 				</div>
 				<div class="form-group">
-					<label for="select-advisor">지도교수</label>
-					<select id="select-advisor" name="advisor" class="form-control">
-						<c:forEach var="pvo" items="${plist}">
-							<option value="${pvo.pcode}">${pvo.pcode}: ${pvo.pname}</option>
-						</c:forEach>
-					</select>
+					<label>지도교수</label>
+					<input id="input-advisor" type="text" name="advisor" class="form-control" placeholder="지도교수 선택은 여기를 클릭하세요.." readonly>
 				</div>
 				<div class="row add-picture">
 					<div class="col-md-6 col-sm-8">
@@ -94,7 +80,7 @@
 				<button type="submit" class="btn btn-success">
 					<span class="glyphicon glyphicon-ok"> </span> &nbsp;저장
 				</button>
-				<button type="reset" class="btn btn-danger">
+				<button id="btn-cancel" type="button" class="btn btn-danger">
 					<span class="glyphicon glyphicon-remove"> </span> &nbsp;취소
 				</button>
 			</form>
@@ -102,9 +88,116 @@
 
 	</div>
 	<jsp:include page="../include/footer.jsp" />
+	<!-- Departments Modal -->
+	<div class="modal fade" id="modal-dlist" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header modal-header-info">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</button>
+					<h2><i class="glyphicon glyphicon-book"></i> 학과 목록</h2>
+				</div>
+				<div id="div-departmentList" class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<div class="col-md-6 col-lg-6">
+								<select id="select-college" class="form-control">
+									<option selected="" disabled="" hidden="" value=""> 대학 분류를 선택해주세요. </option>
+									<option value="인문대학">인문대학</option>
+									<option value="사회과학대학">사회과학대학</option>
+									<option value="자연과학대학">자연과학대학</option>
+									<option value="간호대학">간호대학</option>
+									<option value="경영대학">경영대학</option>
+									<option value="공과대학">공과대학</option>
+									<option value="농업생명과학대학">농업생명과학대학</option>
+									<option value="미술대학">미술대학</option>
+									<option value="법과대학">법과대학</option>
+									<option value="사범대학">사범대학</option>
+									<option value="생활과학대학">생활과학대학</option>
+									<option value="수의과대학">수의과대학</option>
+									<option value="약학대학">약학대학</option>
+									<option value="음악대학">음악대학</option>
+									<option value="의과대학">의과대학</option>
+								</select>
+							</div>
+						</div>
+					</form>
+					<div class="modal-list">
+                    	<ul id="departmentsList" class="list-group">
+                    
+                    	</ul>
+                    </div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">
+						<span class="glyphicon glyphicon-remove"> </span> &nbsp;닫기
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Professors Modal -->
+	<div class="modal fade" id="modal-plist" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header modal-header-info">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+						<span class="sr-only">Close</span>
+					</button>
+					<h2><i class="glyphicon glyphicon-book"></i> 교수 목록</h2>
+				</div>
+				<div id="div-professorsList" class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<div class="col-md-5 col-lg-5 left-select">
+								<select id="select-college-p" class="form-control">
+									<option selected="" disabled="" hidden="" value=""> 대학 분류를 선택해주세요. </option>
+									<option value="인문대학">인문대학</option>
+									<option value="사회과학대학">사회과학대학</option>
+									<option value="자연과학대학">자연과학대학</option>
+									<option value="간호대학">간호대학</option>
+									<option value="경영대학">경영대학</option>
+									<option value="공과대학">공과대학</option>
+									<option value="농업생명과학대학">농업생명과학대학</option>
+									<option value="미술대학">미술대학</option>
+									<option value="법과대학">법과대학</option>
+									<option value="사범대학">사범대학</option>
+									<option value="생활과학대학">생활과학대학</option>
+									<option value="수의과대학">수의과대학</option>
+									<option value="약학대학">약학대학</option>
+									<option value="음악대학">음악대학</option>
+									<option value="의과대학">의과대학</option>
+								</select>
+							</div>
+							<div class="col-md-7 col-lg-7 right-select">
+								<select id="select-dept" class="form-control">
+								
+								</select>
+							</div>
+						</div>
+					</form>
+					<div class="modal-list">
+                    	<ul id="professorsList" class="list-group">
+                    
+                    	</ul>
+                    </div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">
+						<span class="glyphicon glyphicon-remove"> </span> &nbsp;닫기
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
@@ -123,35 +216,132 @@
 	</div>
 </li>
 </script>
+
+<script id="template-departments" type="text/x-handlebars-template">
+{{#each .}}
+	<li class="list-group-item">{{dname}}</li>
+{{/each}}
+</script>
+
+<script id="template-dept-options" type="text/x-handlebars-template">
+<option selected="" disabled="" hidden="" value=""> 학과를 선택해주세요. </option>
+{{#each .}}
+	<option value="{{dname}}">{{dname}}</option>
+{{/each}}
+</script>
+
+<script id="template-professors" type="text/x-handlebars-template">
+{{#each .}}
+	<li class="list-group-item" data-pcode="{{pcode}}">{{pname}}</li>
+{{/each}}
+</script>
+
 <script>
+var formObj = $("#form-create-student");
+
 $(document).ready(function() {
-	var frm = document.getElementById('form-create-student');
-	var curDate = new Date();
-	var curYear = curDate.getFullYear();
-	var curMonth = eval(curDate.getMonth()) + 1;
-	var curDay = eval(curDate.getDate());
+	$.datepicker.regional['ko'] = {
+		closeText: '닫기',
+		prevText: '이전',
+		nextText: '다음',
+		currentText: '오늘',
+		monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+		monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'],
+		dayNames: ['일','월','화','수','목','금','토'],
+		dayNamesShort: ['일','월','화','수','목','금','토'],
+		dayNamesMin: ['일','월','화','수','목','금','토'],
+		weekHeader: 'Wk',
+		dateFormat: 'yy-mm-dd',
+		firstDay: 0,
+		isRTL: false,
+		showMonthAfterYear: true,
+		yearSuffix: '년'
+	};
+		
+	$.datepicker.setDefaults($.datepicker.regional['ko']);
 	
-	var startYear = curYear - 47;
-	for(var i=0; i<48; i++) {
-		frm['birth_yy'].options[i] = new Option(startYear+i, startYear+i);
-	}
+	$("#input-birthday").datepicker();
 	
-	for(var i=0; i<12; i++) {
-		frm['birth_mm'].options[i] = new Option(i+1, i+1);
-	}
-	
-	frm['birth_yy'].value = curYear;
-	frm['birth_mm'].value = curMonth;
-	setDay();
-	frm['birth_dd'].value = curDay;
-	
-	$(".picture-input input:file").change(function (){          
+	$(".picture-input input:file").change(function() {
 		var file = this.files[0];
 		
 		$(".image-preview-filename").val(file.name);
 	});
 
 	var template = Handlebars.compile($("#template-pic").html());
+	
+	$("#btn-cancel").on("click", function(event) {
+		formObj.attr("action", "/students/list");
+		formObj.attr("method", "get");
+		formObj.submit();
+	});
+	
+	$("#input-studentdept").on("click", function(event) {
+		$("#modal-dlist").modal();
+	});
+	
+	$("#departmentsList").on("click", "li", function(event) {
+		var dptname = $(this).text();
+		
+		$("#input-studentdept").val(dptname);
+		$("#modal-dlist").modal('hide');
+	});
+	
+	$("#modal-dlist").on("hidden.bs.modal", function(event) {
+		$(this).find('form')[0].reset();
+		$("#departmentsList").empty();
+	});
+	
+	$("#select-college").change(function(event) {
+		var dept_template = Handlebars.compile($("#template-departments").html());
+		var college = $(this).val();
+		
+		$.getJSON("/departments/" + college, function(list) {
+			var html = dept_template(list);
+			
+			$("#departmentsList").html(html);
+		});
+	});
+	
+	$("#input-advisor").on("click", function() {
+		$("#modal-plist").modal();
+	});
+	
+	$("#select-college-p").change(function(event) {
+		var dept_opt_template = Handlebars.compile($("#template-dept-options").html());
+		var college_p = $(this).val();
+		
+		$.getJSON("/departments/" + college_p, function(list) {
+			var html = dept_opt_template(list);
+			
+			$("#select-dept").html(html);
+		});
+	});
+	
+	$("#select-dept").change(function(event) {
+		var prof_template = Handlebars.compile($("#template-professors").html());
+		var dept = $(this).val();
+		
+		$.getJSON("/professors/" + dept, function(list) {
+			var html = prof_template(list);
+			
+			$("#professorsList").html(html);
+		});
+	});
+	
+	$("#professorsList").on("click", "li", function(event) {
+		var pcode = $(this).data("pcode");
+		var pname = $(this).text();
+		
+		$("#input-advisor").val(pname);
+		$("#input-advisor").data("pcode", pcode);
+		$("#modal-plist").modal('hide');
+	});
+	
+	$("#modal-plist").on("hidden.bs.modal", function(event) {
+		$(this).find('form')[0].reset();
+		$("#professorsList").empty();
+	});
 
 	$("#btn-addPicture").on("click", function(event) {
 		var file = $(".picture-input input:file").prop("files")[0];
@@ -207,40 +397,19 @@ $(document).ready(function() {
 		
 		var $this = $(this);
 		var str = "";
+		var fullname = $(".uploadedList .delbtn").data("fullname");
+		var pcode = $("#input-advisor").data("pcode");
 		
-		str += "<input type='hidden' name='picture' value='" + $(".uploadedList .delbtn").data("fullname") + "'>";
+		$("#input-advisor").val(pcode);
 		
-		$this.append(str);
-		
+		if(fullname) {
+			str += "<input type='hidden' name='picture' value='" + fullname + "'>";
+			
+			$this.append(str);
+		}
+
 		$this.get(0).submit();
 	});
 });
-
-function setDay() {
-	var frm = document.getElementById('form-create-student');
-	
-	var year = frm['birth_yy'].value;
-	var month = frm['birth_mm'].value;
-	var day = frm['birth_dd'].value;
-	var birthDay = frm['birth_dd'];
-	
-	var arrayMonth = [31,28,31,30,31,30,31,31,30,31,30,31];
-	
-	for(var i=birthDay.length; i>0; i--) {
-		birthDay.remove(birthDay.selectedIndex);
-	}
-	
-	for(var i=1; i<=arrayMonth[month-1]; i++) {
-		birthDay.options[i-1] = new Option(i, i);
-	}
-	
-	if(day!=null || day!="") {
-		if(day > arrayMonth[month-1]) {
-			birthDay.options.selectedIndex = arrayMonth[month-1]-1;
-		} else {
-			birthDay.options.selectedIndex = day - 1;
-		}
-	}
-}
 </script>
 </html>

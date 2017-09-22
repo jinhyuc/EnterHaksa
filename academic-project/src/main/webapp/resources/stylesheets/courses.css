@@ -1,2 +1,17 @@
-#div-reg-course { padding-right: 0px }
-#div-searchform { padding-left: 0px }
+#div-reg-course {
+	padding-right: 0px;
+}
+#div-searchform {
+	padding-left: 0px;
+}
+#box-studentList {
+	margin-top: 60px;
+}
+
+.left-select {
+	padding-right: 5px;
+}
+
+.right-select {
+	padding-left: 5px;
+}

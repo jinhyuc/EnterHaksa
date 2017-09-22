@@ -38,7 +38,7 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
-							<div class="col-md-3 col-lg-3" align="center">
+							<div class="col-md-3 col-lg-3">
 								<img id="st-picture" alt="Student picture" class="img-responsive">
 							</div>
 							<div class="col-md-9 col-lg-9">
@@ -115,7 +115,7 @@
 							<h3 class="box-title">수강신청 목록</h3>
 						</div>
 						<div class="box-body">
-							<div id="div-lectureList">
+							<div id="div-enrollList">
 		      							
 		      				</div>
 						</div>
@@ -123,7 +123,7 @@
 				</div>
 			</div>
 			<!-- Modal -->
-			<div class="modal fade" id="modal-clist" tabindex="-1" role="dialog" aria-labelledby="cListModalLabel" aria-hidden="true">
+			<div class="modal fade" id="modal-clist" tabindex="-1" role="dialog" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header modal-header-info">
@@ -133,38 +133,13 @@
 							</button>
 							<h2><i class="glyphicon glyphicon-book"></i> 강좌 목록</h2>
 						</div>
-						<div class="modal-body">
-							<div class="table-responsive">
-								<table class="table table-hover">
-									<thead>
-										<tr>
-											<th>강좌번호</th>
-											<th>강좌명</th>
-											<th>강의시간 수</th>
-											<th>강의실</th>
-											<th>담당교수</th>	
-											<th>최대수강 인원 수</th>	
-											<th>수강신청 인원 수</th>
-										</tr>
-									</thead>
-									<tbody>
-										<c:forEach var="courses" items="${clist}">
-											<tr class="tr-coursesModal" data-lcode="${courses.lcode}" data-lname="${courses.lname}">
-												<td>${courses.lcode}</td>
-												<td>${courses.lname}</td>
-												<td>${courses.hours} 시간</td>
-												<td>${courses.room} 호</td>
-												<td>${courses.pname}</td>
-												<td>${courses.capacity}</td>
-												<td>${courses.persons}</td>																				
-											</tr>
-										</c:forEach>
-									</tbody>
-								</table>
-							</div>
+						<div id="div-coursesList" class="modal-body">
+							
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								<span class="glyphicon glyphicon-remove"> </span> &nbsp;닫기
+							</button>
 						</div>
 					</div>
 				</div>
@@ -236,21 +211,25 @@
 	<table class="table table-hover">
 		<thead>
 			<tr>
-				<th>강좌번호</th>
-				<th>강좌명</th>
-				<th>강의시간 수</th>
-				<th>강의실</th>
-				<th>담당교수</th>
+				<th class="text-center">강좌번호</th>
+				<th class="text-center">강좌명</th>
+				<th class="text-center">강의시간 수</th>
+				<th class="text-center">강의실</th>
+				<th class="text-center">담당교수</th>
+				<th class="text-center">최대수강 인원 수</th>
+				<th class="text-center">수강신청 인원 수</th>
 			</tr>
 		</thead>
 		<tbody>
 		{{#each .}}
-			<tr>
-				<td>{{lcode}}</td>
-				<td>{{lname}}</td>
-				<td>{{hours}} 시간</td>
-				<td>{{room}} 호</td>
-				<td>{{pname}}</td>
+			<tr class="tr-coursesModal" data-lcode="{{lcode}}" data-lname="{{lname}}">
+				<td class="text-center">{{lcode}}</td>
+				<td class="text-center">{{lname}}</td>
+				<td class="text-center">{{hours}} 시간</td>
+				<td class="text-center">{{room}} 호</td>
+				<td class="text-center">{{pname}}</td>
+				<td class="text-center">{{capacity}} 명</td>
+				<td class="text-center">{{persons}} 명</td>
 			</tr>
 		{{/each}}
 		</tbody>
@@ -258,12 +237,21 @@
 </script>
 <script>
 var scode = "${svo.scode}";
+var $el_confirm = $("#confirm-pop");
+var $el_alert = $("#alert-pop");
 
 var printList = function(list, templateObj) {
 	var template = Handlebars.compile(templateObj.html());
 	var html = template(list);
 	
-	$("#div-lectureList").html(html);
+	$("#div-enrollList").html(html);
+}
+
+var printModalList = function(list, templateObj) {
+	var template = Handlebars.compile(templateObj.html());
+	var html = template(list);
+	
+	$("#div-coursesList").html(html);
 }
 
 $(document).ready(function() {
@@ -283,23 +271,34 @@ $(document).ready(function() {
 		formObj.submit();
 	});
 	
-	$("#btn-delete-student").on("click", function(event) {
-		var $el_confirm = $("#confirm-pop");
-
-		layer_popup.confirm($el_confirm, "학생 정보를 삭제하시겠습니까?", function() {
-			deletePicture();
-			formObj.attr("action", "/students/remove");
-			formObj.submit();
-		});
+	$("#btn-delete-student").on("click", function(event) {		
+		$.getJSON("/enrollments/countByStudent/" + scode, function(data) {
+			console.log(data.count);
+			
+			if(data.count > 0) {
+				layer_popup.alert($el_alert, "수강신청을 한 학생은 삭제할 수 없습니다.");
+			} else {
+				layer_popup.confirm($el_confirm, "학생 정보를 삭제하시겠습니까?", function() {
+					deletePicture();
+					formObj.attr("action", "/students/remove");
+					formObj.submit();
+				});
+			}
+		});		
 	});
 	
 	$("#btn-enroll-student").on("click", getCoursesList());
 	
 	$("#input-enroll").on("click", function(event) {
+		$.getJSON("/courses/listAll", function(data) {
+			console.log(data.list.length);
+			console.log(data.list);
+			printModalList(data.list, $('#template-clist'));
+		});
 		$("#modal-clist").modal();
 	});
 	
-	$(".tr-coursesModal").on("click", function(event) {
+	$("#div-coursesList").on("click", ".tr-coursesModal", function(event) {
 		var lcode = $(this).data("lcode");
 		var lname = $(this).data("lname");
 		console.log(lcode);
@@ -327,7 +326,7 @@ $(document).ready(function() {
 			success: function(result) {
 				console.log("enroll result: " + result);
 				if(result == "SUCCESS") {
-					alert("수강 신청 되었습니다.");
+					layer_popup.alert($el_alert, "수강신청 되었습니다.");
 					getCoursesList();
 				}
 			}
@@ -378,5 +377,4 @@ function deletePicture() {
 	}
 }
 </script>
-
 </html>

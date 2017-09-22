@@ -5,13 +5,13 @@
   
 <mapper namespace="com.hyucs.academic.mapper.CoursesMapper">
 	<select id="listAll" resultType="CoursesVO">
-		SELECT c.*, p.pname
+		SELECT c.lcode, c.lname, c.hours, c.room, c.instructor, c.capacity, c.persons, p.pname
 		FROM tbl_courses c
 		JOIN tbl_professors p ON c.instructor=p.pcode
 	</select>
 	
 	<select id="listByStudent" resultType="CoursesVO">
-		SELECT c.*, p.pname
+		SELECT c.lcode, c.lname, c.hours, c.room, c.instructor, c.capacity, c.persons, p.pname
 		FROM tbl_courses c
 		JOIN tbl_professors p ON c.instructor=p.pcode
 		JOIN tbl_enrollments e ON c.lcode=e.lcode
@@ -24,10 +24,16 @@
 	</insert>
 	
 	<select id="read" resultType="CoursesVO">
-		SELECT c.*, p.pname
+		SELECT c.lcode, c.lname, c.hours, c.room, c.instructor, c.capacity, c.persons, p.pname
 		FROM tbl_courses c
 		JOIN tbl_professors p ON c.instructor=p.pcode
-		WHERE lcode=#{lcode}
+		WHERE c.lcode=#{lcode}
+	</select>
+	
+	<select id="countByProf" resultType="int">
+		SELECT COUNT(lcode)
+		FROM tbl_courses
+		WHERE instructor=#{instructor}
 	</select>
 	
 	<delete id="delete">
@@ -37,12 +43,18 @@
 	
 	<update id="update">
 		UPDATE tbl_courses
-		SET lname=#{lname}, hours=#{hours}, room=#{room}, instructor=#{instructor}, capacity=#{capacity}, persons=#{persons}
+		SET lname=#{lname}, hours=#{hours}, room=#{room}, instructor=#{instructor}, capacity=#{capacity}
 		WHERE lcode=#{lcode}
 	</update>
 	
+	<update id="updatePersons">
+		UPDATE tbl_courses
+		SET persons=persons+#{amount}
+		WHERE lcode=#{lcode} 
+	</update>
+	
 	<select id="listSearch" resultType="CoursesVO">
-		SELECT c.*, p.pname
+		SELECT c.lcode, c.lname, c.hours, c.room, c.instructor, c.capacity, c.persons, p.pname
 		FROM tbl_courses c
 		JOIN tbl_professors p ON c.instructor=p.pcode
 		

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hyucs.academic.domain.ProfessorsVO;
 import com.hyucs.academic.domain.SearchCriteria;
@@ -21,13 +22,21 @@ public class ProfessorsServiceImpl implements ProfessorsService {
 	}
 	
 	@Override
+	public List<ProfessorsVO> listByDepartment(String dept) throws Exception {
+		return dao.listByDepartment(dept);
+	}
+	
+	@Transactional
+	@Override
 	public void create(ProfessorsVO vo) throws Exception {
 		String picture = vo.getPicture();
 		String pcode = vo.getPcode();
 		
 		dao.create(vo);
 		
-		dao.addPicture(picture, pcode);
+		if(picture != null) {
+			dao.addPicture(picture, pcode);
+		}
 	}
 
 	@Override

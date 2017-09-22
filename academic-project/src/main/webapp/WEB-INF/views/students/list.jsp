@@ -51,7 +51,7 @@
 			<br>
 			<div class="row">
 				<div class="table-responsive">
-					<table class="table table-hover table-bordered">
+					<table class="table table-hover list-table">
 						<thead>
 							<tr>
 								<th>학생번호</th>
@@ -98,6 +98,7 @@
 		</div>
 	</div>
 	<jsp:include page="../include/footer.jsp" />
+	<!-- Layer popup -->
 	<div class="layer alert-layer">
 		<div class="layer-bg">
 		</div>

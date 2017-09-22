@@ -3,7 +3,7 @@
  */
 
 var layer_popup = {
-		confirm : function(el, msg, callback) {
+		confirm : function(el, msg, callback_confirm) {
 			var $el = el;
 			
 			el.find('.div-popmsg .message').html(msg);
@@ -29,8 +29,8 @@ var layer_popup = {
 				
 				$('.confirm-layer').fadeOut();
 				
-				if(callback) {
-					callback();
+				if(callback_confirm) {
+					callback_confirm();
 				}
 			});
 			
@@ -47,7 +47,7 @@ var layer_popup = {
 			});
 		},
 		
-		alert : function(el, msg, callback) {
+		alert : function(el, msg, callback_alert) {
 			var $el = el;
 			
 			$el.find('.div-popmsg .message').html(msg)
@@ -73,8 +73,8 @@ var layer_popup = {
 				
 				$('.alert-layer').fadeOut();
 				
-				if(callback) {
-					callback();
+				if(callback_alert) {
+					callback_alert();
 				}
 			});
 			
@@ -82,6 +82,11 @@ var layer_popup = {
 				event.preventDefault();
 				
 				$('.alert-layer').fadeOut();
+				
+				if(callback_alert) {
+					callback_alert();
+				}
+				
 			});
 		}
 }

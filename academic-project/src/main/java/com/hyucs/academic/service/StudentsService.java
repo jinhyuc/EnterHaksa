@@ -27,4 +27,6 @@ public interface StudentsService {
 	public String getPicture(String scode) throws Exception;
 	
 	public void deletePictureByFilename(String fileName) throws Exception;
+	
+	public int countByProf(String advisor) throws Exception;
 }
