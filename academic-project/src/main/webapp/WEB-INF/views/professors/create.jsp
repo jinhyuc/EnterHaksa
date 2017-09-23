@@ -37,7 +37,10 @@
 				</div>
 				<div class="form-group">
 					<label>임용일자</label>
-					<input id="input-hiredate" type="text" name="hireDate" class="form-control" readonly>
+					<div class="icon-addon">
+						<input id="input-hiredate" type="text" name="hireDate" class="form-control" placeholder="임용일자 설정은 여기를 클릭하세요.."readonly>
+						<label for="input-hiredate" class="glyphicon glyphicon-calendar"></label>
+					</div>
 				</div>
 				<div class="form-group">
 					<label>직급</label>
@@ -54,8 +57,25 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label for="input-email">E-Mail 주소</label>
+					<div class="icon-addon">
+						<input id="input-email" type="text" name="email" class="form-control" placeholder="Email 주소를 입력하세요.">
+						<label for="input-email" class="glyphicon glyphicon-envelope"></label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="input-mobile">휴대전화</label>
+					<div class="icon-addon">
+						<input id="input-mobile" type="text" name="mobile" class="form-control" placeholder="전화번호를 입력하세요.">
+						<label for="input-mobile" class="glyphicon glyphicon-phone"></label>
+					</div>
+				</div>
+				<div class="form-group">
 					<label for="input-profsalary">급여</label>
-					<input id="input-profsalary" type="text" name="salary" class="form-control" placeholder="급여를 입력하세요">
+					<div class="icon-addon">
+						<input id="input-profsalary" type="text" name="salary" class="form-control" placeholder="급여를 입력하세요">
+						<label for="input-profsalary" class="glyphicon glyphicon-usd"></label>
+					</div>
 				</div>
 				<div class="row add-picture">
 					<div class="col-md-6 col-sm-8">
@@ -186,11 +206,10 @@ $(document).ready(function() {
 		dayNames: ['일','월','화','수','목','금','토'],
 		dayNamesShort: ['일','월','화','수','목','금','토'],
 		dayNamesMin: ['일','월','화','수','목','금','토'],
-		weekHeader: 'Wk',
 		dateFormat: 'yy-mm-dd',
-		firstDay: 0,
-		isRTL: false,
 		showMonthAfterYear: true,
+		changeMonth: true,
+		changeYear: true,
 		yearSuffix: '년'
 	};
 		

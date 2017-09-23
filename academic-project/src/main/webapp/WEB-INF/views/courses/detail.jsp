@@ -45,31 +45,31 @@
 								<table class="table table-course-information">
 									<tbody>
 										<tr>
-											<td class="col-md-2"><strong>강좌번호:</strong></td>
+											<td class="col-md-2"><strong>강좌번호 :</strong></td>
 											<td>${cvo.lcode}</td>
 										</tr>
 										<tr>
-											<td class="col-md-2"><strong>강좌명:</strong></td>
+											<td class="col-md-2"><strong>강좌명 :</strong></td>
 											<td>${cvo.lname}</td>
 										</tr>
 										<tr>
-											<td class="col-md-2"><strong>강의시간 수:</strong></td>
+											<td class="col-md-2"><strong>강의시간 수 :</strong></td>
 											<td>${cvo.hours} 시간</td>
 										</tr>
 										<tr>
-											<td class="col-md-2"><strong>강의실:</strong></td>
+											<td class="col-md-2"><strong>강의실 :</strong></td>
 											<td>${cvo.room} 호</td>
 										</tr>
 										<tr>
-											<td class="col-md-2"><strong>담당교수:</strong></td>
+											<td class="col-md-2"><strong>담당교수 :</strong></td>
 											<td>${cvo.pname} [${cvo.instructor}]</td>
 										</tr>
 										<tr>
-											<td class="col-md-2"><strong>최대수강 인원 수:</strong></td>
+											<td class="col-md-2"><strong>최대수강 인원 수 :</strong></td>
 											<td>${cvo.capacity} 명</td>
 										</tr>
 										<tr>
-											<td class="col-md-2"><strong>수강신청 인원 수:</strong></td>
+											<td class="col-md-2"><strong>수강신청 인원 수 :</strong></td>
 											<td>${cvo.persons} 명</td>
 										</tr>
 									</tbody>

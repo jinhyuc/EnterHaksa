@@ -8,6 +8,8 @@ public class ProfessorsVO {
 	private String dept;
 	private Date hireDate;
 	private String title;
+	private String email;
+	private String mobile;
 	private int salary;
 	private String picture;
 	
@@ -41,6 +43,18 @@ public class ProfessorsVO {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getMobile() {
+		return mobile;
+	}
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
 	public int getSalary() {
 		return salary;
 	}
@@ -57,6 +71,7 @@ public class ProfessorsVO {
 	@Override
 	public String toString() {
 		return "ProfessorsVO [pcode=" + pcode + ", pname=" + pname + ", dept=" + dept + ", hireDate=" + hireDate
-				+ ", title=" + title + ", salary=" + salary + ", picture=" + picture + "]";
+				+ ", title=" + title + ", email=" + email + ", mobile=" + mobile + ", salary=" + salary + ", picture="
+				+ picture + "]";
 	}
 }

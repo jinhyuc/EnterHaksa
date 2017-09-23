@@ -45,27 +45,35 @@
 								<table class="table table-professor-information">
 									<tbody>
 										<tr>
-											<td class="col-md-2"><strong>교수번호:</strong></td>
+											<td class="col-md-2"><strong>교수번호 :</strong></td>
 											<td>${pvo.pcode}</td>
 										</tr>
 										<tr>
-											<td class="col-md-2"><strong>교수이름:</strong></td>
+											<td class="col-md-2"><strong>교수이름 :</strong></td>
 											<td>${pvo.pname}</td>
 										</tr>
 										<tr>
-											<td class="col-md-2"><strong>소속학과:</strong></td>
+											<td class="col-md-2"><strong>소속학과 :</strong></td>
 											<td>${pvo.dept}</td>
 										</tr>
 										<tr>
-											<td class="col-md-2"><strong>임용일자:</strong></td>
+											<td class="col-md-2"><strong>임용일자 :</strong></td>
 											<td>${pvo.hireDate}</td>
 										</tr>
 										<tr>
-											<td class="col-md-2"><strong>직급:</strong></td>
+											<td class="col-md-2"><strong>직급 :</strong></td>
 											<td>${pvo.title}</td>
 										</tr>
 										<tr>
-											<td class="col-md-2"><strong>급여:</strong></td>
+											<td class="col-md-2"><strong>E-Mail :</strong></td>
+											<td>${pvo.email}</td>
+										</tr>
+										<tr>
+											<td class="col-md-2"><strong>휴대전화 :</strong></td>
+											<td>${pvo.mobile}</td>
+										</tr>
+										<tr>
+											<td class="col-md-2"><strong>급여 :</strong></td>
 											<td><fmt:formatNumber value="${pvo.salary}" pattern="#,### 원"/></td>
 										</tr>
 									</tbody>

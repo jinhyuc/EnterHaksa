@@ -53,11 +53,33 @@
 				</div>
 				<div class="form-group">
 					<label>생년월일</label>
-					<input id="input-birthday" type="text" name="birthday" class="form-control" value="${svo.birthday}" readonly>
+					<div class="icon-addon">
+						<input id="input-birthday" type="text" name="birthday" class="form-control" value="${svo.birthday}" readonly>
+						<label for="input-birthday" class="glyphicon glyphicon-calendar"></label>
+					</div>
+					
+				</div>
+				<div class="form-group">
+					<label for="input-email">E-Mail 주소</label>
+					<div class="icon-addon">
+						<input id="input-email" type="text" name="email" class="form-control" value="${svo.email}">
+						<label for="input-email" class="glyphicon glyphicon-envelope"></label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="input-mobile">휴대전화</label>
+					<div class="icon-addon">
+						<input id="input-mobile" type="text" name="mobile" class="form-control" value="${svo.mobile}">
+						<label for="input-mobile" class="glyphicon glyphicon-phone"></label>
+					</div>
 				</div>
 				<div class="form-group">
 					<label>지도교수</label>
-					<input id="input-advisor" type="text" name="advisor" class="form-control" value="${svo.pname}" data-pcode="${svo.advisor}" readonly>
+					<div class="icon-addon">
+						<input id="input-advisor" type="text" name="advisor" class="form-control" value="${svo.pname}" data-pcode="${svo.advisor}" readonly>
+						<label for="input-advisor" class="glyphicon glyphicon-user"></label>
+					</div>
+					
 				</div>
 				<div class="row add-picture">
 					<div class="col-md-6 col-sm-8">
@@ -258,11 +280,10 @@ $(document).ready(function() {
 		dayNames: ['일','월','화','수','목','금','토'],
 		dayNamesShort: ['일','월','화','수','목','금','토'],
 		dayNamesMin: ['일','월','화','수','목','금','토'],
-		weekHeader: 'Wk',
 		dateFormat: 'yy-mm-dd',
-		firstDay: 0,
-		isRTL: false,
 		showMonthAfterYear: true,
+		changeMonth: true,
+		changeYear: true,
 		yearSuffix: '년'
 	};
 	

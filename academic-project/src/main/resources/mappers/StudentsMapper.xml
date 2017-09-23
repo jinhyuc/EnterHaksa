@@ -20,7 +20,7 @@
 	
 	<insert id="insert">
 		INSERT INTO tbl_students
-		VALUES(#{scode}, #{sname}, #{dept}, #{year}, #{birthday}, #{advisor})
+		VALUES(#{scode}, #{sname}, #{dept}, #{year}, #{birthday}, #{email}, #{mobile}, #{advisor})
 	</insert>
 	
 	<insert id="addPicture">
@@ -65,7 +65,7 @@
 	
 	<update id="update">
 		UPDATE tbl_students
-		SET sname=#{sname}, dept=#{dept}, year=#{year}, birthday=#{birthday}, advisor=#{advisor}
+		SET sname=#{sname}, dept=#{dept}, year=#{year}, birthday=#{birthday}, email=#{email}, mobile=#{mobile}, advisor=#{advisor}
 		WHERE scode=#{scode}
 	</update>
 	

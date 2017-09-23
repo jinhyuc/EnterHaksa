@@ -11,7 +11,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">
+					<a class="navbar-brand" href="/professors/list">
 						<img src="/resources/imgs/enter_academic_logo.png" alt="Enter">
 					</a>
 				</div>

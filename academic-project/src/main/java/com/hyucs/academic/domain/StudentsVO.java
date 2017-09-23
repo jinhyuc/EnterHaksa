@@ -8,6 +8,8 @@ public class StudentsVO {
 	private String dept;
 	private String year;
 	private Date birthday;
+	private String email;
+	private String mobile;
 	private String advisor;
 	private String pname;
 	private String picture;
@@ -43,6 +45,18 @@ public class StudentsVO {
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getMobile() {
+		return mobile;
+	}
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
 	public String getAdvisor() {
 		return advisor;
 	}
@@ -71,7 +85,7 @@ public class StudentsVO {
 	@Override
 	public String toString() {
 		return "StudentsVO [scode=" + scode + ", sname=" + sname + ", dept=" + dept + ", year=" + year + ", birthday="
-				+ birthday + ", advisor=" + advisor + ", pname=" + pname + ", picture=" + picture + ", grade=" + grade
-				+ "]";
+				+ birthday + ", email=" + email + ", mobile=" + mobile + ", advisor=" + advisor + ", pname=" + pname
+				+ ", picture=" + picture + ", grade=" + grade + "]";
 	}
 }

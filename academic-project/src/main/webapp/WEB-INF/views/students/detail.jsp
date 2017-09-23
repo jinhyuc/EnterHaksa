@@ -45,27 +45,35 @@
 								<table class="table table-student-information">
 									<tbody>
 										<tr>
-											<td class="col-md-2"><strong>학생번호:</strong></td>
+											<td class="col-md-2"><strong>학생번호 :</strong></td>
 											<td>${svo.scode}</td>
 										</tr>
 										<tr>
-											<td class="col-md-2"><strong>학생이름:</strong></td>
+											<td class="col-md-2"><strong>학생이름 :</strong></td>
 											<td>${svo.sname}</td>
 										</tr>
 										<tr>
-											<td class="col-md-2"><strong>소속학과:</strong></td>
+											<td class="col-md-2"><strong>소속학과 :</strong></td>
 											<td>${svo.dept}</td>
 										</tr>
 										<tr>
-											<td class="col-md-2"><strong>학년:</strong></td>
+											<td class="col-md-2"><strong>학년 :</strong></td>
 											<td>${svo.year} 학년</td>
 										</tr>
 										<tr>
-											<td class="col-md-2"><strong>생년월일:</strong></td>
+											<td class="col-md-2"><strong>생년월일 :</strong></td>
 											<td>${svo.birthday}</td>
 										</tr>
 										<tr>
-											<td class="col-md-2"><strong>지도교수:</strong></td>
+											<td class="col-md-2"><strong>E-Mail 주소 :</strong></td>
+											<td>${svo.email}</td>
+										</tr>
+										<tr>
+											<td class="col-md-2"><strong>휴대전화 :</strong></td>
+											<td>${svo.mobile}</td>
+										</tr>
+										<tr>
+											<td class="col-md-2"><strong>지도교수 :</strong></td>
 											<td>${svo.pname}</td>
 										</tr>
 									</tbody>
