@@ -12,6 +12,7 @@
 <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="/resources/stylesheets/style.css?ver=170825_10" rel="stylesheet">
 <link href="/resources/stylesheets/professors.css?ver=170828_2" rel="stylesheet">
+<link href="/resources/validator/dist/css/bootstrapValidator.css" rel="stylesheet">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 <body>
@@ -31,11 +32,11 @@
 				<input type="hidden" name="keyword" value="${cri.keyword}">
 				
 				<div class="form-group">
-					<label for="input-profcode">교수번호</label>
+					<label for="input-profcode">교수번호 <sup class="red"> *</sup></label>
 					<input id="input-profcode" type="text" name="pcode" class="form-control" value="${pvo.pcode}" readonly="readonly">
 				</div>
 				<div class="form-group">
-					<label for="input-profname">교수이름</label>
+					<label for="input-profname">교수이름 <sup class="red"> *</sup></label>
 					<input id="input-profname" type="text" name="pname" class="form-control" value="${pvo.pname}">
 				</div>
 				<div class="form-group">
@@ -176,6 +177,9 @@
 	<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
 	<script src="/resources/js/upload.js"></script>
+	<!-- BootstrapValidator -->
+	<script src="/resources/validator/dist/js/bootstrapValidator.js"></script>
+	<script src="/resources/validator/dist/js/language/ko_KR.js"></script>
 </body>
 <script id="template-pic" type="text/x-handlebars-template">
 <li>
@@ -203,6 +207,64 @@ var template = Handlebars.compile($("#template-pic").html());
 var $pcode = "${pvo.pcode}";
 
 $(document).ready(function() {
+	$("#form-modify-prof").bootstrapValidator({
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			pname: {
+				validators: {
+					notEmpty: {
+						message: '필수 입력 항목입니다.'
+					},
+					stringLength: {
+						max: 15,
+						message: '%s 자 이하로 입력 가능합니다.'
+					}
+				}
+			},
+			email: {
+				validators: {
+					emailAddress: {
+						message: '유효한 e-mail 주소를 입력하세요.'
+					},
+					stringLength: {
+						max: 50,
+						message: '%s 자 이하로 입력 가능합니다.'
+					}
+				}
+			},
+			mobile: {
+				validators: {
+					digits: {
+						message: '숫자만 입력 가능합니다.'
+					},
+					stringLength: {
+						max: 20,
+						message: '%s 자 이하로 입력 가능합니다.'
+					}
+				}
+			},
+			salary: {
+				validators: {
+					digits: {
+						message: '숫자만 입력 가능합니다.'
+					}
+				}
+			}
+		}
+	})
+	.on('error.validator.bv', function(e, data) {
+		data.element
+				.data('bv.messages')
+				// Hide all the messages
+				.find('.help-block[data-bv-for="' + data.field + '"]').hide()
+				// Show only message associated with current validator
+				.filter('[data-bv-validator="' + data.validator + '"]').show();
+	});
+	
 	$.datepicker.regional['ko'] = {
 		closeText: '닫기',
 		prevText: '이전',
@@ -227,9 +289,9 @@ $(document).ready(function() {
 	loadPicture();
 	
 	$("#btn-cancel").on("click", function(event) {
-		formObj.attr("action", "/professors/detail");
-		formObj.attr("method", "get");
-		formObj.submit();
+		var params = "pcode=${pvo.pcode}&page=${cri.page}&perPageNum=${cri.perPageNum}&searchType=${cri.searchType}&keyword=${cri.keyword}";
+		
+		location.replace("/professors/detail?" + params);
 	});
 	
 	$("#input-profdept").on("click", function(event) {

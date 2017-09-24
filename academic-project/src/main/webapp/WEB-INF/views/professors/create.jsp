@@ -10,7 +10,8 @@
 <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="/resources/stylesheets/style.css?ver=170825_10" rel="stylesheet">
 <link href="/resources/stylesheets/professors.css?ver=170828_2" rel="stylesheet">
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link href="/resources/validator/dist/css/bootstrapValidator.css" rel="stylesheet">
+<link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
 </head>
 <body>
 	<div class="container-fluid">
@@ -24,11 +25,11 @@
 			</div>
 			<form id="form-create-prof" role="form" method="post">
 				<div class="form-group">
-					<label for="input-profcode">교수번호</label>
+					<label for="input-profcode">교수번호 <sup class="red"> *</sup></label>
 					<input id="input-profcode" type="text" name="pcode" class="form-control" placeholder="교수번호를 입력하세요">
 				</div>
 				<div class="form-group">
-					<label for="input-profname">교수이름</label>
+					<label for="input-profname">교수이름 <sup class="red"> *</sup></label>
 					<input id="input-profname" type="text" name="pname" class="form-control" placeholder="교수이름을 입력하세요">
 				</div>
 				<div class="form-group">
@@ -66,7 +67,7 @@
 				<div class="form-group">
 					<label for="input-mobile">휴대전화</label>
 					<div class="icon-addon">
-						<input id="input-mobile" type="text" name="mobile" class="form-control" placeholder="전화번호를 입력하세요.">
+						<input id="input-mobile" type="text" name="mobile" class="form-control" placeholder="- 를 제외한 숫자만 입력">
 						<label for="input-mobile" class="glyphicon glyphicon-phone"></label>
 					</div>
 				</div>
@@ -163,7 +164,6 @@
 			</div>
 		</div>
 	</div>
-
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -171,6 +171,9 @@
 	<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
 	<script src="/resources/js/upload.js"></script>
+	<!-- BootstrapValidator -->
+	<script src="/resources/validator/dist/js/bootstrapValidator.js"></script>
+	<script src="/resources/validator/dist/js/language/ko_KR.js"></script>
 </body>
 <script id="template-pic" type="text/x-handlebars-template">
 <li>
@@ -196,6 +199,96 @@
 var formObj = $("#form-create-prof");
 
 $(document).ready(function() {
+	$("#form-create-prof").bootstrapValidator({
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			pcode: {
+				validators: {
+					notEmpty: {
+						message: '필수 입력 항목입니다.'
+					},
+					stringLength: {
+						fix: 3
+					},
+					digits: {
+						messsage: '숫자만 입력 가능합니다.'
+					}
+				}
+			},
+			pname: {
+				validators: {
+					notEmpty: {
+						message: '필수 입력 항목입니다.'
+					},
+					stringLength: {
+						max: 15,
+						message: '%s 자 이하로 입력 가능합니다.'
+					}
+				}
+			},
+			email: {
+				validators: {
+					emailAddress: {
+						message: '유효한 e-mail 주소를 입력하세요.'
+					},
+					stringLength: {
+						max: 50,
+						message: '%s 자 이하로 입력 가능합니다.'
+					}
+				}
+			},
+			mobile: {
+				validators: {
+					digits: {
+						message: '숫자만 입력 가능합니다.'
+					},
+					stringLength: {
+						max: 20,
+						message: '%s 자 이하로 입력 가능합니다.'
+					}
+				}
+			},
+			salary: {
+				validators: {
+					digits: {
+						message: '숫자만 입력 가능합니다.'
+					}
+				}
+			}
+		}
+	})
+	.on('error.validator.bv', function(e, data) {
+		data.element
+				.data('bv.messages')
+				// Hide all the messages
+				.find('.help-block[data-bv-for="' + data.field + '"]').hide()
+				// Show only message associated with current validator
+				.filter('[data-bv-validator="' + data.validator + '"]').show();
+	})
+	.on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+
+            var $form     = $(e.target),
+                validator = $form.data('bootstrapValidator');
+            
+    		var str = "";
+    		var fullname = $(".uploadedList .delbtn").data("fullname");
+    		
+    		if(fullname) {
+    			str += "<input type='hidden' name='picture' value='" + fullname + "'>";
+    			
+    			$form.append(str);
+    		}
+    		console.log(str);
+    		
+    		validator.defaultSubmit();
+	});
+	
 	$.datepicker.regional['ko'] = {
 		closeText: '닫기',
 		prevText: '이전',
@@ -218,9 +311,7 @@ $(document).ready(function() {
 	$("#input-hiredate").datepicker();
 	
 	$("#btn-cancel").on("click", function(event) {
-		formObj.attr("action", "/professors/list");
-		formObj.attr("method", "get");
-		formObj.submit();
+		location.replace("/professors/list");
 	});
 	
 	$("#input-profdept").on("click", function(event) {
@@ -279,23 +370,6 @@ $(document).ready(function() {
 				}
 			}
 		});
-	});
-	
-	$("#form-create-prof").submit(function(event) {
-		event.preventDefault();
-		
-		var $this = $(this);
-		var str = "";
-		var fullname = $(".uploadedList .delbtn").data("fullname");
-		
-		if(fullname) {
-			str += "<input type='hidden' name='picture' value='" + fullname + "'>";
-			
-			$this.append(str);
-		}
-		console.log($this);
-		
-		$this.get(0).submit();
 	});
 	
 	$("#departmentsList").on("click", "li", function(event) {

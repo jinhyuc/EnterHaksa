@@ -12,6 +12,7 @@
 <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="/resources/stylesheets/style.css?ver=170825_10" rel="stylesheet">
 <link href="/resources/stylesheets/students.css?ver=170831" rel="stylesheet">
+<link href="/resources/validator/dist/css/bootstrapValidator.css" rel="stylesheet">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 <body>
@@ -31,11 +32,11 @@
 				<input type="hidden" name="keyword" value="${cri.keyword}">
 				
 				<div class="form-group">
-					<label for="input-studentcode">학생번호</label>
+					<label for="input-studentcode">학생번호 <sup class="red"> *</sup></label>
 					<input id="input-studentcode" type="text" name="scode" class="form-control" value="${svo.scode}" readonly>
 				</div>
 				<div class="form-group">
-					<label for="input-studentname">학생이름</label>
+					<label for="input-studentname">학생이름 <sup class="red"> *</sup></label>
 					<input id="input-studentname" type="text" name="sname" class="form-control" value="${svo.sname}">
 				</div>
 				<div class="form-group">
@@ -230,6 +231,9 @@
 	<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
 	<script src="/resources/js/upload.js"></script>
+	<!-- BootstrapValidator -->
+	<script src="/resources/validator/dist/js/bootstrapValidator.js"></script>
+	<script src="/resources/validator/dist/js/language/ko_KR.js"></script>
 </body>
 <script id="template-pic" type="text/x-handlebars-template">
 <li>
@@ -270,6 +274,70 @@ var template = Handlebars.compile($("#template-pic").html());
 var $scode = "${svo.scode}";
 	
 $(document).ready(function() {
+	$("#form-modify-student").bootstrapValidator({
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			sname: {
+				validators: {
+					notEmpty: {
+						message: '필수 입력 항목입니다.'
+					},
+					stringLength: {
+						max: 15,
+						message: '%s 자 이하로 입력 가능합니다.'
+					}
+				}
+			},
+			email: {
+				validators: {
+					emailAddress: {
+						message: '유효한 e-mail 주소를 입력하세요.'
+					},
+					stringLength: {
+						max: 50,
+						message: '%s 자 이하로 입력 가능합니다.'
+					}
+				}
+			},
+			mobile: {
+				validators: {
+					digits: {
+						message: '숫자만 입력 가능합니다.'
+					},
+					stringLength: {
+						max: 20,
+						message: '%s 자 이하로 입력 가능합니다.'
+					}
+				}
+			}
+		}
+	})
+	.on('error.validator.bv', function(e, data) {
+		data.element
+				.data('bv.messages')
+				// Hide all the messages
+				.find('.help-block[data-bv-for="' + data.field + '"]').hide()
+				// Show only message associated with current validator
+				.filter('[data-bv-validator="' + data.validator + '"]').show();
+	})
+	.on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+            
+            var $form = $(e.target),
+            validator = $form.data('bootstrapValidator');
+    		
+    		var pcode = $("#input-advisor").data("pcode");
+    		
+    		$("#input-advisor").val(pcode);
+
+    		validator.defaultSubmit();
+	});
+	
 	$.datepicker.regional['ko'] = {
 		closeText: '닫기',
 		prevText: '이전',
@@ -294,9 +362,9 @@ $(document).ready(function() {
 	loadPicture();
 	
 	$("#btn-cancel").on("click", function(event) {
-		formObj.attr("action", "/students/detail");
-		formObj.attr("method", "get");
-		formObj.submit();
+		var params = "scode=${svo.scode}&page=${cri.page}&perPageNum=${cri.perPageNum}&searchType=${cri.searchType}&keyword=${cri.keyword}";
+		
+		location.replace("/students/detail?" + params);
 	});
 	
 	$("#input-studentdept").on("click", function(event) {
@@ -364,17 +432,6 @@ $(document).ready(function() {
 	$("#modal-plist").on("hidden.bs.modal", function(event) {
 		$(this).find('form')[0].reset();
 		$("#professorsList").empty();
-	});
-	
-	$("#form-modify-student").submit(function(event) {
-		event.preventDefault();
-		
-		var $this = $(this);
-		var pcode = $("#input-advisor").data("pcode");
-		
-		$("#input-advisor").val(pcode);
-		
-		$this.get(0).submit();
 	});
 	
 	$(".picture-input input:file").change(function (){  

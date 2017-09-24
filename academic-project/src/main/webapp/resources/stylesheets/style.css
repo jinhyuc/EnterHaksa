@@ -85,7 +85,7 @@ input[type="number"],
 .icon-addon:after {
 	clear: both;
 }
-.icon-addon .glyphicon {
+.icon-addon label.glyphicon {
     position: absolute;
     /* z-index: 2; */
     left: 10px;
@@ -101,7 +101,7 @@ input[type="number"],
     float: left;
     font-weight: normal;
 }
-.icon-addon:hover .glyphicon {
+.icon-addon:hover label.glyphicon {
     color: #2580db;
 }
 /*

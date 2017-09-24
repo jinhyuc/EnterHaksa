@@ -12,6 +12,7 @@
 <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="/resources/stylesheets/style.css?ver=170825_10" rel="stylesheet">
 <link href="/resources/stylesheets/courses.css?ver=170829" rel="stylesheet">
+<link href="/resources/validator/dist/css/bootstrapValidator.css" rel="stylesheet">
 </head>
 <body>
 	<div class="container-fluid">
@@ -30,11 +31,11 @@
 				<input type="hidden" name="keyword" value="${cri.keyword}">
 				
 				<div class="form-group">
-					<label for="input-lecturecode">강좌번호</label>
+					<label for="input-lecturecode">강좌번호 <sup class="red"> *</sup></label>
 					<input id="input-lecturecode" type="text" name="lcode" class="form-control" value="${cvo.lcode}" readonly>
 				</div>
 				<div class="form-group">
-					<label for="input-lecturename">강좌이름</label>
+					<label for="input-lecturename">강좌이름 <sup class="red"> *</sup></label>
 					<input id="input-lecturename" type="text" name="lname" class="form-control" value="${cvo.lname}">
 				</div>
 				<div class="form-group">
@@ -129,6 +130,9 @@
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+	<!-- BootstrapValidator -->
+	<script src="/resources/validator/dist/js/bootstrapValidator.js"></script>
+	<script src="/resources/validator/dist/js/language/ko_KR.js"></script>
 </body>
 
 <script id="template-dept-options" type="text/x-handlebars-template">
@@ -148,10 +152,74 @@
 var formObj = $("#form-modify-course");
 
 $(document).ready(function() {
+	$("#form-modify-course").bootstrapValidator({
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			lname: {
+				validators: {
+					notEmpty: {
+						message: '필수 입력 항목입니다.'
+					},
+					stringLength: {
+						max: 50,
+						message: '%s 자 이하로 입력 가능합니다.'
+					}
+				}
+			},
+			hours: {
+				validators: {
+					digits: {
+						message: '숫자만 입력 가능합니다.'
+					}
+				}
+			},
+			room: {
+				validators: {
+					stringLength: {
+						max: 10,
+						message: '%s 자 이하로 입력 가능합니다.'
+					}
+				}
+			},
+			capacity: {
+				validators: {
+					digits: {
+						message: '숫자만 입력 가능합니다.'
+					}
+				}
+			}
+		}
+	})
+	.on('error.validator.bv', function(e, data) {
+		data.element
+				.data('bv.messages')
+				// Hide all the messages
+				.find('.help-block[data-bv-for="' + data.field + '"]').hide()
+				// Show only message associated with current validator
+				.filter('[data-bv-validator="' + data.validator + '"]').show();
+	})
+	.on('success.form.bv', function(e) {
+            // Prevent submit form
+            e.preventDefault();
+            
+            var $form = $(e.target),
+            validator = $form.data('bootstrapValidator');
+
+    		var pcode = $("#input-instructor").data("pcode");
+    		
+    		$("#input-instructor").val(pcode);
+
+    		validator.defaultSubmit();
+	});
+	
 	$("#btn-cancel").on("click", function(event) {
-		formObj.attr("action", "/courses/detail");
-		formObj.attr("method", "get");
-		formObj.submit();
+		var params = "lcode=${cvo.lcode}&page=${cri.page}&perPageNum=${cri.perPageNum}&searchType=${cri.searchType}&keyword=${cri.keyword}";
+		
+		location.replace("/courses/detail?" + params);
 	});
 	
 	$("#input-instructor").on("click", function() {
@@ -192,18 +260,6 @@ $(document).ready(function() {
 	$("#modal-plist").on("hidden.bs.modal", function(event) {
 		$(this).find('form')[0].reset();
 		$("#professorsList").empty();
-	});
-	
-	$("#form-modify-course").submit(function(event) {
-		event.preventDefault();
-		
-		var $this = $(this);
-
-		var pcode = $("#input-instructor").data("pcode");
-		
-		$("#input-instructor").val(pcode);
-
-		$this.get(0).submit();
 	});
 })
 </script>
