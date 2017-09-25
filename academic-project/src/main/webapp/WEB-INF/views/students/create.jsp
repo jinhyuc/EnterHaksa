@@ -68,7 +68,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label>지도교수</label>
+					<label>지도교수 <sup class="red"> *</sup></label>
 					<div class="icon-addon">
 						<input id="input-advisor" type="text" name="advisor" class="form-control" placeholder="지도교수 선택은 여기를 클릭하세요.." readonly>
 						<label for="input-advisor" class="glyphicon glyphicon-user"></label>
@@ -316,6 +316,14 @@ $(document).ready(function() {
 						message: '%s 자 이하로 입력 가능합니다.'
 					}
 				}
+			},
+			advisor: {
+				trigger: 'change',
+				validators: {
+					notEmpty: {
+						message: '필수 입력 항목입니다.'
+					}
+				}
 			}
 		}
 	})
@@ -443,6 +451,7 @@ $(document).ready(function() {
 		$("#input-advisor").val(pname);
 		$("#input-advisor").data("pcode", pcode);
 		$("#modal-plist").modal('hide');
+		$("#input-advisor").change();
 	});
 	
 	$("#modal-plist").on("hidden.bs.modal", function(event) {

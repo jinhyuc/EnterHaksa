@@ -41,11 +41,11 @@
 					<input id="input-room" type="text" name="room" class="form-control" placeholder="강의실을 입력하세요">
 				</div>
 				<div class="form-group">
-					<label>담당교수</label>
+					<label>담당교수 <sup class="red"> *</sup></label>
 					<input id="input-instructor" type="text" name="instructor" class="form-control" placeholder="담당교수 선택은 여기를 클릭하세요.." readonly>
 				</div>
 				<div class="form-group">
-					<label for="input-capacity">최대 수강인원 수</label>
+					<label for="input-capacity">최대 수강인원 수 <sup class="red"> *</sup></label>
 					<input id="input-capacity" type="text" name="capacity" class="form-control" placeholder="최대 수강인원 수를 입력하세요">
 				</div>
 				<button type="submit" class="btn btn-success">
@@ -187,8 +187,19 @@ $(document).ready(function() {
 			},
 			capacity: {
 				validators: {
+					notEmpty: {
+						message: '필수 입력 항목입니다.'
+					},
 					digits: {
 						message: '숫자만 입력 가능합니다.'
+					}
+				}
+			},
+			instructor: {
+				trigger: 'change',
+				validators: {
+					notEmpty: {
+						message: '필수 입력 항목입니다.'
 					}
 				}
 			}
@@ -253,6 +264,7 @@ $(document).ready(function() {
 		$("#input-instructor").val(pname);
 		$("#input-instructor").data("pcode", pcode);
 		$("#modal-plist").modal('hide');
+		$("#input-instructor").change();
 	});
 	
 	$("#modal-plist").on("hidden.bs.modal", function(event) {

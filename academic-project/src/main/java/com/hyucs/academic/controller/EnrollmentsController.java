@@ -1,6 +1,5 @@
 package com.hyucs.academic.controller;
 
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,14 +17,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.hyucs.academic.domain.CoursesVO;
 import com.hyucs.academic.domain.EnrollmentsVO;
 import com.hyucs.academic.domain.PageMaker;
 import com.hyucs.academic.domain.SearchCriteria;
-import com.hyucs.academic.domain.StudentsVO;
 import com.hyucs.academic.service.CoursesService;
 import com.hyucs.academic.service.EnrollmentsService;
 import com.hyucs.academic.service.StudentsService;
@@ -60,8 +57,21 @@ public class EnrollmentsController {
 	@ResponseBody
 	public ResponseEntity<String> register(@RequestBody EnrollmentsVO vo) {
 		ResponseEntity<String> entity = null;
+		CoursesVO cvo = null;
 		
 		try {
+			if(service.read(vo.getLcode(), vo.getScode()) != null) {
+				entity = new ResponseEntity<String>("FAIL-DUPLICATE", HttpStatus.BAD_REQUEST);
+				return entity;
+			}
+			
+			cvo = cservice.read(vo.getLcode());
+			
+			if(cvo.getPersons() >= cvo.getCapacity()) {
+				entity = new ResponseEntity<String>("FAIL-FULL", HttpStatus.BAD_REQUEST);
+				return entity;
+			}
+			
 			service.create(vo);
 			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 		} catch(Exception e) {

@@ -64,6 +64,7 @@ public class CoursesController {
 			rttr.addFlashAttribute("result", "CREATE-FAIL");
 			return "redirect:/courses/list";
 		}
+		vo.setPersons(0);
 		
 		service.create(vo);
 		rttr.addFlashAttribute("result", "CREATE-SUCCESS");

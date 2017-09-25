@@ -319,26 +319,40 @@ $(document).ready(function() {
 	
 	$("#btn-submit-enroll").on("click", function() {
 		var lcode = $("#input-enroll").data("lcode");
-		
-		$.ajax({
-			type: "post",
-			url: "/enrollments/register/",
-			headers: {
-				"Content-Type": "application/json",
-				"X-HTTP-Method-Override": "POST" },
-			dataType: "text",
-			data: JSON.stringify({
-				lcode:lcode,
-				scode:scode
-			}),
-			success: function(result) {
-				console.log("enroll result: " + result);
-				if(result == "SUCCESS") {
-					layer_popup.alert($el_alert, "수강신청 되었습니다.");
-					getCoursesList();
+		if(lcode) {
+			$.ajax({
+				type: "post",
+				url: "/enrollments/register/",
+				headers: {
+					"Content-Type": "application/json",
+					"X-HTTP-Method-Override": "POST" },
+				dataType: "text",
+				data: JSON.stringify({
+					lcode:lcode,
+					scode:scode
+				}),
+				success: function(result) {
+					console.log("enroll result: " + result);
+					if(result == "SUCCESS") {
+						layer_popup.alert($el_alert, "수강신청 되었습니다.");
+						$("#input-enroll").val("");
+						$("#input-enroll").data("lcode", "");
+						
+						getCoursesList();
+					}
+				},
+				error: function(result) {
+					if(result.responseText == "FAIL-DUPLICATE") {
+						layer_popup.alert($el_alert, "이미 수강 신청한 강좌입니다.");
+						getCoursesList();
+					}
+					if(result.responseText == "FAIL-FULL") {
+						layer_popup.alert($el_alert, "수강신청 인원이 초과되어 수강신청이 불가합니다.");
+						getCoursesList();
+					}
 				}
-			}
-		});
+			});
+		}
 	});
 });
 

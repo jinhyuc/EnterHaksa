@@ -1,6 +1,7 @@
 package com.hyucs.academic.controller;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +10,13 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +46,14 @@ public class ProfessorsController {
 	@Inject
 	private StudentsService stservice;
 	
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    dateFormat.setLenient(false);
+
+	    // true passed to CustomDateEditor constructor means convert empty String to null
+	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+	}	
 	
 	@RequestMapping(value="/list", method=RequestMethod.GET)
 	public void listGet(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {

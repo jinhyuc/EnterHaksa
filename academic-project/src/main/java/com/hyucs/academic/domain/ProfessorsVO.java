@@ -10,7 +10,7 @@ public class ProfessorsVO {
 	private String title;
 	private String email;
 	private String mobile;
-	private int salary;
+	private Integer salary;
 	private String picture;
 	
 	public String getPcode() {
@@ -55,10 +55,10 @@ public class ProfessorsVO {
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-	public int getSalary() {
+	public Integer getSalary() {
 		return salary;
 	}
-	public void setSalary(int salary) {
+	public void setSalary(Integer salary) {
 		this.salary = salary;
 	}
 	public String getPicture() {

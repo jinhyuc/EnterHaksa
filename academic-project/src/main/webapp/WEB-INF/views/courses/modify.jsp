@@ -187,8 +187,19 @@ $(document).ready(function() {
 			},
 			capacity: {
 				validators: {
+					notEmpty: {
+						message: '필수 입력 항목입니다.'
+					},
 					digits: {
 						message: '숫자만 입력 가능합니다.'
+					}
+				}
+			},
+			instructor: {
+				trigger: 'change',
+				validators: {
+					notEmpty: {
+						message: '필수 입력 항목입니다.'
 					}
 				}
 			}
@@ -255,6 +266,7 @@ $(document).ready(function() {
 		$("#input-instructor").val(pname);
 		$("#input-instructor").data("pcode", pcode);
 		$("#modal-plist").modal('hide');
+		$("#input-instructor").change();
 	});
 	
 	$("#modal-plist").on("hidden.bs.modal", function(event) {

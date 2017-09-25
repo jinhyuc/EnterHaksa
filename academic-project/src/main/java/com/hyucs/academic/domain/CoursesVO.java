@@ -3,11 +3,11 @@ package com.hyucs.academic.domain;
 public class CoursesVO {
 	private String lcode;
 	private String lname;
-	private int hours;
+	private Integer hours;
 	private String room;
 	private String instructor;
-	private int capacity;
-	private int persons;
+	private Integer capacity;
+	private Integer persons;
 	private String pname;
 	
 	public String getLcode() {
@@ -22,10 +22,10 @@ public class CoursesVO {
 	public void setLname(String lname) {
 		this.lname = lname;
 	}
-	public int getHours() {
+	public Integer getHours() {
 		return hours;
 	}
-	public void setHours(int hours) {
+	public void setHours(Integer hours) {
 		this.hours = hours;
 	}
 	public String getRoom() {
@@ -40,16 +40,16 @@ public class CoursesVO {
 	public void setInstructor(String instructor) {
 		this.instructor = instructor;
 	}
-	public int getCapacity() {
+	public Integer getCapacity() {
 		return capacity;
 	}
-	public void setCapacity(int capacity) {
+	public void setCapacity(Integer capacity) {
 		this.capacity = capacity;
 	}
-	public int getPersons() {
+	public Integer getPersons() {
 		return persons;
 	}
-	public void setPersons(int persons) {
+	public void setPersons(Integer persons) {
 		this.persons = persons;
 	}
 	public String getPname() {
