@@ -1,22 +1,78 @@
-@font-face{
+@font-face {
   font-family:'NanumBarunGothic';
   src:url("/resources/bootstrap/fonts/NanumBarunGothic.eot");
   src:local(""),url("/resources/bootstrap/fonts/NanumBarunGothic.woff") format("woff");
 }
-body { font-family: "NanumBarunGothic",  sans-serif; padding-top: 100px }
-html, body { height: 100% }  
-.container-fluid { min-height: 100%; padding: 0 }
-.container { padding-bottom: 60px }
-.navbar{ background-color: #fff; border: none; padding-bottom: 10px;  font-family: "NanumBarunGothic",  sans-serif; font-weight: 300; font-size: 18px;height: 100px; text-transform: capitalize; border-bottom: 1px solid #AAAAAA }
-.navbar-toggle { position: relative;margin-top: 40px;top: 2px }
-.navbar-nav { padding-right: 10px;margin-top: 20px; background-color: #fff }
-.navbar-nav li { margin:0 20px }
-.navbar-brand { padding-left: 20px }  
-.navbar-collapse { padding-top: 10px; background-color: #fff }
-.navbar-default .navbar-nav>li>a:hover { color: #FF8000 } 
+body {
+	font-family: "NanumBarunGothic",  sans-serif;
+	padding-top: 80px;
+}
+html, body {
+	height: 100%;
+}  
+.container-fluid {
+	min-height: 100%;
+	padding: 0;
+}
+.container-fluid .container {
+	padding-bottom: 60px;
+}
+
+.navbar {
+	background-color: #fff;
+	border: none;
+	padding-bottom: 10px;
+	font-family: "NanumBarunGothic",  sans-serif;
+	font-weight: 300;
+	font-size: 16px;
+	height: 81px;
+	border-bottom: 1px solid #AAAAAA;
+}
+.navbar-nav {
+	padding-right: 10px;
+	background-color: #fff;
+}
+.navbar-nav li {
+	margin:0 10px;
+}
+.navbar-nav>li>a {
+	padding-top: 40px;
+	height: 80px;
+}
+.navbar-header>a {
+	height: 80px;
+	padding-top: 8px;
+}
+.navbar-brand {
+	padding-left: 0;
+}
+.navbar-collapse {
+	background-color: #fff;
+}
+.navbar-toggle {
+	position: relative;
+	margin-top: 20px;
+	top: 2px;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+	color: #FF8000;
+	border-bottom: #fd594a 4px solid;
+} 
 .navbar-default .navbar-nav>li.active>a,
 .navbar-default .navbar-nav>li.active>a:hover,
-.navbar-default .navbar-nav>li.active>a:focus { color: #FF8000; background-color: #fff }
+.navbar-default .navbar-nav>li.active>a:focus,
+.navbar-default .navbar-nav>li.open>a,
+.navbar-default .navbar-nav>li.open>a:hover,
+.navbar-default .navbar-nav>li.open>a:focus {
+	color: #FF8000;
+	background-color: #fff;
+	border-bottom: #fd594a 4px solid;
+}
+
+#navbar-menu {
+	padding-left: 50px;
+}
 
 .list-table {
 	border: 1px solid #ccc;
@@ -31,6 +87,7 @@ html, body { height: 100% }
 
 input[type="text"],
 input[type="number"],
+input[type="password"],
 .form-group select {
 	border-radius: 0px;
 }
@@ -85,6 +142,8 @@ input[type="number"],
 .icon-addon:after {
 	clear: both;
 }
+
+.icon-addon label.fa,
 .icon-addon label.glyphicon {
     position: absolute;
     /* z-index: 2; */

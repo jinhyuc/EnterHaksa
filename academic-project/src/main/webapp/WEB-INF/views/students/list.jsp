@@ -12,11 +12,12 @@
 <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="/resources/stylesheets/style.css?ver=170825_10" rel="stylesheet">
 <link href="/resources/stylesheets/students.css?ver=170831" rel="stylesheet">
+<link href="/resources/bootstrap/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
+	<jsp:include page="../include/header.jsp" />
 	<div class="container-fluid">
-		<jsp:include page="../include/header.jsp" />
-		<!-- <div class="container"> -->
+		<div class="container">
 			<div class="row">
 				<ol class="breadcrumb">
 					<li><a href="#">홈</a></li>

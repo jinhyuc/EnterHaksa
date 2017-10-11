@@ -12,10 +12,12 @@
 <link href="/resources/stylesheets/professors.css?ver=170828_2" rel="stylesheet">
 <link href="/resources/validator/dist/css/bootstrapValidator.css" rel="stylesheet">
 <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+<link href="/resources/bootstrap/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
+	<jsp:include page="../include/header.jsp" />
 	<div class="container-fluid">
-		<jsp:include page="../include/header.jsp" />
+		<div class="container">
 			<div class="row">
 				<ol class="breadcrumb">
 					<li><a href="#">홈</a></li>
@@ -75,7 +77,7 @@
 					<label for="input-profsalary">급여</label>
 					<div class="icon-addon">
 						<input id="input-profsalary" type="text" name="salary" class="form-control" placeholder="급여를 입력하세요">
-						<label for="input-profsalary" class="glyphicon glyphicon-usd"></label>
+						<label for="input-profsalary" class="fa fa-krw"></label>
 					</div>
 				</div>
 				<div class="row add-picture">

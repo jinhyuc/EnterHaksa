@@ -1,0 +1,51 @@
+body {
+	padding-top: 70px;
+}
+.loginbox .panel-body {
+	padding-top: 30px;
+}
+.login-id, .login-passwd {
+	margin-bottom: 25px;
+}
+.login-btn {
+	margin-top: 10px;
+}
+#form-login .input-group-addon {
+	border-radius: 0;
+}
+
+.registerbox .panel-body {
+	padding-top: 30px;
+}
+.reg-btn {
+	margin-top: 10px;
+}
+
+.dup-check {
+	padding-left: 0;
+}
+
+.id-input {
+	padding-right: 5px;
+}
+
+.icon-addon label.fa,
+.icon-addon label.glyphicon {
+	left: 25px;
+}
+
+#login-alert {
+	border-radius: 0;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	border-left-width: 5px;
+	border-left-color: #d9534f;
+}
+
+.help-block {
+    margin-bottom: 0;
+}
+
+.logo {
+	margin-bottom: 20px;
+}

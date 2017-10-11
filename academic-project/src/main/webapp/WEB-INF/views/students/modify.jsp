@@ -14,10 +14,12 @@
 <link href="/resources/stylesheets/students.css?ver=170831" rel="stylesheet">
 <link href="/resources/validator/dist/css/bootstrapValidator.css" rel="stylesheet">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link href="/resources/bootstrap/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
+	<jsp:include page="../include/header.jsp" />
 	<div class="container-fluid">
-		<jsp:include page="../include/header.jsp" />
+		<div class="container">
 			<div class="row">
 				<ol class="breadcrumb">
 					<li><a href="#">홈</a></li>

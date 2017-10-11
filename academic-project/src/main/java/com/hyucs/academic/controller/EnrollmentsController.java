@@ -61,14 +61,14 @@ public class EnrollmentsController {
 		
 		try {
 			if(service.read(vo.getLcode(), vo.getScode()) != null) {
-				entity = new ResponseEntity<String>("FAIL-DUPLICATE", HttpStatus.BAD_REQUEST);
+				entity = new ResponseEntity<String>("FAIL-DUPLICATE", HttpStatus.OK);
 				return entity;
 			}
 			
 			cvo = cservice.read(vo.getLcode());
 			
 			if(cvo.getPersons() >= cvo.getCapacity()) {
-				entity = new ResponseEntity<String>("FAIL-FULL", HttpStatus.BAD_REQUEST);
+				entity = new ResponseEntity<String>("FAIL-FULL", HttpStatus.OK);
 				return entity;
 			}
 			
@@ -76,7 +76,7 @@ public class EnrollmentsController {
 			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 		} catch(Exception e) {
 			e.printStackTrace();
-			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.OK);
 		}
 		
 		return entity;

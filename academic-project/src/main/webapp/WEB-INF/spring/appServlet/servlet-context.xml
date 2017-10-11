@@ -29,8 +29,23 @@
 		<beans:constructor-arg value="C:\\Data\\upload"></beans:constructor-arg>
 	</beans:bean>
 	
+	<beans:bean id="loginInterceptor" class="com.hyucs.academic.interceptor.LoginInterceptor"></beans:bean>
+	<beans:bean id="authInterceptor" class="com.hyucs.academic.interceptor.AuthInterceptor"></beans:bean>
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/user/loginPOST"/>
+			<beans:ref bean="loginInterceptor"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/professors/**"/>
+			<mapping path="/students/**"/>
+			<mapping path="/courses/**"/>
+			<mapping path="/enrollments/**"/>
+			<beans:ref bean="authInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
 	<context:component-scan base-package="com.hyucs.academic" />
-	
-	
 	
 </beans:beans>
