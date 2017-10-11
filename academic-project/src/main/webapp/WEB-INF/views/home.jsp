@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Enter ÇÐ»ç°ü¸®</title>
+<title>Enter í•™ì‚¬ê´€ë¦¬</title>
 <!-- Bootstrap -->
 <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="/resources/stylesheets/style.css?ver=170825_10" rel="stylesheet">
@@ -23,10 +23,10 @@
               <form id="login-form" action="#" method="post" role="form" style="display: block;">
                 <h2>LOGIN</h2>
                   <div class="form-group">
-                    <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="¾ÆÀÌµð" value="">
+                    <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="ì•„ì´ë””" value="">
                   </div>
                   <div class="form-group">
-                    <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="ºñ¹Ð¹øÈ£">
+                    <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="ë¹„ë°€ë²ˆí˜¸">
                   </div>
                   <div class="col-xs-6 form-group pull-left checkbox">
                     <input id="checkbox1" type="checkbox" name="remember">

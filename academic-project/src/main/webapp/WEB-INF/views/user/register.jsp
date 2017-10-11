@@ -128,7 +128,7 @@ $(document).ready(function() {
 		
 		$.ajax({
 			type: "post",
-			url: "/user/isValid/",
+			url: "/user/isValidId/",
 			dataType: "text",
 			data: {'id' : id},
 			success: function(result) {

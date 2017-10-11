@@ -26,8 +26,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public int loginCheck(String uid, String upw) throws Exception {
-		return dao.loginCheck(uid, upw);
+	public UserVO loginCheck(String uid) throws Exception {
+		return dao.loginCheck(uid);
 	}
 
 	@Override

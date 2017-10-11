@@ -12,13 +12,13 @@
 	<select id="login" resultType="UserVO">
 		SELECT *
 		FROM tbl_user
-		WHERE uid=#{uid} AND upw=#{upw}
+		WHERE uid=#{uid}
 	</select>
 	
-	<select id="loginCheck" resultType="int">
-		SELECT COUNT(*)
+	<select id="loginCheck" resultType="UserVO">
+		SELECT *
 		FROM tbl_user
-		WHERE uid=#{uid} AND upw=#{upw}
+		WHERE uid=#{uid}
 	</select>
 	
 	<select id="countById" resultType="int">

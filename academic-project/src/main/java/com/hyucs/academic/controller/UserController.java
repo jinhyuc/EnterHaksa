@@ -10,8 +10,10 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -33,6 +35,9 @@ public class UserController {
 	@Inject
 	private UserService service;
 	
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
+	
 	@RequestMapping(value="/register", method=RequestMethod.GET)
 	public void registerGET() throws Exception {
 		
@@ -40,6 +45,10 @@ public class UserController {
 	
 	@RequestMapping(value="/register", method=RequestMethod.POST)
 	public String registerPOST(UserVO vo, RedirectAttributes rttr) throws Exception {
+		String encoded_passwd = passwordEncoder.encode(vo.getUpw());
+		
+		vo.setUpw(encoded_passwd);
+
 		service.create(vo);
 		
 		rttr.addFlashAttribute("result", "CREATE-SUCCESS");
@@ -60,10 +69,7 @@ public class UserController {
 			return;
 		}
 		
-		model.addAttribute("userVO", vo);
-		logger.info("--- loginPOST LoginDTO : " + dto.toString());
-		logger.info("--- loginPOST UserVO   : " + vo.toString());
-		
+		model.addAttribute("userVO", vo);		
 		
 		if(dto.isUseCookie()) {
 			int amount = 60 * 60 * 24 * 7;
@@ -100,24 +106,19 @@ public class UserController {
 	@RequestMapping(value="/logincheck", method=RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<String> logincheck(String id, String passwd) throws Exception {
-		logger.info("-------- LoginCheck --------");
-		logger.info("id : " + id);
-		logger.info("password : " + passwd);
 		
-		int count = service.loginCheck(id, passwd);
+		UserVO vo = service.loginCheck(id);
 		
-		if(count > 0) {
+		if(passwordEncoder.matches(passwd, vo.getUpw())) {
 			return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>("FAIL", HttpStatus.OK);
 		}
 	}
 	
-	@RequestMapping(value="/isValid", method=RequestMethod.POST)
+	@RequestMapping(value="/isValidId", method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<String> isValid(String id) throws Exception {
-		logger.info("received id : " + id);
-
+	public ResponseEntity<String> isValidId(String id) throws Exception {
 		
 		int count = service.countById(id);
 		

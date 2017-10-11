@@ -25,12 +25,8 @@ public class UserDAOImpl implements UserDAO {
 	}
 	
 	@Override
-	public int loginCheck(String uid, String upw) throws Exception {
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("uid", uid);
-		paramMap.put("upw", upw);
-		
-		return session.selectOne(namespace + ".loginCheck", upw);
+	public UserVO loginCheck(String uid) throws Exception {		
+		return session.selectOne(namespace + ".loginCheck", uid);
 	}
 
 	@Override

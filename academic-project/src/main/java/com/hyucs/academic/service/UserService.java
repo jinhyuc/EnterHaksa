@@ -10,7 +10,7 @@ public interface UserService {
 	
 	public UserVO login(LoginDTO dto) throws Exception;
 	
-	public int loginCheck(String uid, String upw) throws Exception;
+	public UserVO loginCheck(String uid) throws Exception;
 	
 	public int countById(String uid) throws Exception;
 	
