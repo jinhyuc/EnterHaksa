@@ -109,6 +109,10 @@ public class UserController {
 		
 		UserVO vo = service.loginCheck(id);
 		
+		if(vo == null) {
+			return new ResponseEntity<String>("FAIL", HttpStatus.OK);
+		}
+		
 		if(passwordEncoder.matches(passwd, vo.getUpw())) {
 			return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 		} else {
