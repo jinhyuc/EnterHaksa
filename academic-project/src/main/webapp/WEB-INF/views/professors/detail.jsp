@@ -10,8 +10,8 @@
 <title>교수현황</title>
 <!-- Bootstrap -->
 <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="/resources/stylesheets/style.css?ver=170825_10" rel="stylesheet">
-<link href="/resources/stylesheets/professors.css?ver=170828_1" rel="stylesheet">
+<link href="/resources/stylesheets/style.css?ver=171012" rel="stylesheet">
+<link href="/resources/stylesheets/professors.css?ver=171012" rel="stylesheet">
 <link href="/resources/bootstrap/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
@@ -70,7 +70,7 @@
 											<td>${pvo.email}</td>
 										</tr>
 										<tr>
-											<td class="col-md-2"><strong>휴대전화 :</strong></td>
+											<td class="col-md-2"><strong>연락처 :</strong></td>
 											<td>${pvo.mobile}</td>
 										</tr>
 										<tr>

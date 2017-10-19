@@ -9,8 +9,8 @@
 <title>강좌등록</title>
 <!-- Bootstrap -->
 <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="/resources/stylesheets/style.css?ver=170825_10" rel="stylesheet">
-<link href="/resources/stylesheets/courses.css?ver=170829" rel="stylesheet">
+<link href="/resources/stylesheets/style.css?ver=171012" rel="stylesheet">
+<link href="/resources/stylesheets/courses.css?ver=171012" rel="stylesheet">
 <link href="/resources/validator/dist/css/bootstrapValidator.css" rel="stylesheet">
 <link href="/resources/bootstrap/css/font-awesome.min.css" rel="stylesheet">
 </head>

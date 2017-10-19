@@ -10,8 +10,8 @@
 <title>교수목록</title>
 <!-- Bootstrap -->
 <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="/resources/stylesheets/style.css?ver=170825_10" rel="stylesheet">
-<link href="/resources/stylesheets/professors.css?ver=170828_2" rel="stylesheet">
+<link href="/resources/stylesheets/style.css?ver=171012" rel="stylesheet">
+<link href="/resources/stylesheets/professors.css?ver=171012" rel="stylesheet">
 <link href="/resources/bootstrap/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>

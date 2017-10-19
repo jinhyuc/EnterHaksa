@@ -8,8 +8,8 @@
 <title>교수등록</title>
 <!-- Bootstrap -->
 <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="/resources/stylesheets/style.css?ver=170825_10" rel="stylesheet">
-<link href="/resources/stylesheets/professors.css?ver=170828_2" rel="stylesheet">
+<link href="/resources/stylesheets/style.css?ver=171012" rel="stylesheet">
+<link href="/resources/stylesheets/professors.css?ver=171012" rel="stylesheet">
 <link href="/resources/validator/dist/css/bootstrapValidator.css" rel="stylesheet">
 <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
 <link href="/resources/bootstrap/css/font-awesome.min.css" rel="stylesheet">
@@ -67,7 +67,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="input-mobile">휴대전화</label>
+					<label for="input-mobile">연락처</label>
 					<div class="icon-addon">
 						<input id="input-mobile" type="text" name="mobile" class="form-control" placeholder="- 를 제외한 숫자만 입력">
 						<label for="input-mobile" class="glyphicon glyphicon-phone"></label>

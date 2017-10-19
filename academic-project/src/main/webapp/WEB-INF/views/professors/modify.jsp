@@ -10,8 +10,8 @@
 <title>교수수정</title>
 <!-- Bootstrap -->
 <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="/resources/stylesheets/style.css?ver=170825_10" rel="stylesheet">
-<link href="/resources/stylesheets/professors.css?ver=170828_2" rel="stylesheet">
+<link href="/resources/stylesheets/style.css?ver=171012" rel="stylesheet">
+<link href="/resources/stylesheets/professors.css?ver=171012" rel="stylesheet">
 <link href="/resources/validator/dist/css/bootstrapValidator.css" rel="stylesheet">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link href="/resources/bootstrap/css/font-awesome.min.css" rel="stylesheet">
@@ -74,7 +74,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="input-mobile">휴대전화</label>
+					<label for="input-mobile">연락처</label>
 					<div class="icon-addon">
 						<input id="input-mobile" type="text" name="mobile" class="form-control" value="${pvo.mobile}">
 						<label for="input-mobile" class="glyphicon glyphicon-phone"></label>
@@ -84,7 +84,7 @@
 					<label for="input-profsalary">급여</label>
 					<div class="icon-addon">
 						<input id="input-profsalary" type="text" name="salary" class="form-control" value="${pvo.salary}">
-						<label for="input-profsalary" class="glyphicon glyphicon-usd"></label>
+						<label for="input-profsalary" class="fa fa-krw"></label>
 					</div>
 				</div>
 				<div class="row add-picture">

@@ -10,8 +10,8 @@
 <title>학생현황</title>
 <!-- Bootstrap -->
 <link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="/resources/stylesheets/style.css?ver=170825_10" rel="stylesheet">
-<link href="/resources/stylesheets/students.css?ver=170831" rel="stylesheet">
+<link href="/resources/stylesheets/style.css?ver=171012" rel="stylesheet">
+<link href="/resources/stylesheets/students.css?ver=171012" rel="stylesheet">
 <link href="/resources/bootstrap/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
@@ -340,10 +340,10 @@ $(document).ready(function() {
 						$("#input-enroll").data("lcode", "");
 						
 						getCoursesList();
-					} else if(result.responseText == "FAIL-DUPLICATE") {
+					} else if(result == "FAIL-DUPLICATE") {
 						layer_popup.alert($el_alert, "이미 수강 신청한 강좌입니다.");
 						getCoursesList();
-					} else if(result.responseText == "FAIL-FULL") {
+					} else if(result == "FAIL-FULL") {
 						layer_popup.alert($el_alert, "수강신청 인원이 초과되어 수강신청이 불가합니다.");
 						getCoursesList();
 					}
