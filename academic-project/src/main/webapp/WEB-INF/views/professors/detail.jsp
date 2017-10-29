@@ -167,30 +167,6 @@
 			</div>
 		</div>
 	</div>
-	<div class="layer alert-layer">
-		<div class="layer-bg">
-		</div>
-		<div id="alert-pop" class="pop-layer">
-			<div class="pop-container">
-				<div class="pop-contents">
-					<div class="row div-popmsg">
-						<h4 class="col-md-1">
-							<span class="glyphicon glyphicon-info-sign"> </span>
-						</h4>
-						<h4 class="col-md-11 message">
-						
-						</h4>
-					</div>
-					
-					<div class="div-popbtn">
-						<button type="button" class="btn btn-default ok">
-							<span class="glyphicon glyphicon-ok"> </span> &nbsp;확인
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 	<!-- Modal -->
 	<div class="modal fade" id="modal-grade" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog">
@@ -219,14 +195,8 @@
 			</div>
 		</div>
 	</div>
-
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
 	<script src="/resources/js/upload.js"></script>
-	<script src="/resources/js/layerpopup.js"></script>
 </body>
 <script id="template-stlist" type="text/x-handlebars-template">
 	<table class="table table-hover">
@@ -259,6 +229,7 @@
 <script>
 var pcode = "${pvo.pcode}";
 var $lcode;
+var login_id = "${login.uid}";
 
 var printList = function(list, templateObj) {
 	var template = Handlebars.compile(templateObj.html());
@@ -286,7 +257,6 @@ $(document).ready(function() {
 		
 	$("#btn-delete-prof").on("click", function(event) {
 		var $el_confirm = $("#confirm-pop");
-		var $el_alert = $("#alert-pop");
 		
 		$.getJSON("/courses/countByProf/" + pcode, function(data) {
 			console.log(data.count);
@@ -299,6 +269,8 @@ $(document).ready(function() {
 					
 					if(data.count > 0) {
 						layer_popup.alert($el_alert, "지도교수로 등록되어 있는 교수는 삭제할 수 없습니다.");
+					} else if(!login_id) {
+						layer_popup.alert($el_alert, "로그인이 필요한 서비스 입니다.");
 					} else {
 						layer_popup.confirm($el_confirm, "교수 정보를 삭제하시겠습니까?", function() {
 							deletePicture();

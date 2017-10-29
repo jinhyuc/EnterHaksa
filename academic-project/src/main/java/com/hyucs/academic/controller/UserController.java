@@ -79,8 +79,9 @@ public class UserController {
 		}
 	}
 	
-	@RequestMapping(value="/logout", method=RequestMethod.GET)
-	public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession session, RedirectAttributes rttr) throws Exception {
+	@RequestMapping(value="/logout", method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response, HttpSession session, RedirectAttributes rttr) throws Exception {
 		Object obj = session.getAttribute("login");
 		
 		if(obj != null) {
@@ -99,8 +100,7 @@ public class UserController {
 			}
 		}
 		
-		rttr.addFlashAttribute("result", "LOGOUT");
-		return "redirect:/user/login";
+		return new ResponseEntity<String>("LOGOUT", HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/logincheck", method=RequestMethod.POST)

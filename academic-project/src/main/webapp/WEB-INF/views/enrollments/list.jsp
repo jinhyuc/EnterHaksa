@@ -131,41 +131,11 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="layer alert-layer">
-		<div class="layer-bg">
-		</div>
-		<div id="alert-pop" class="pop-layer">
-			<div class="pop-container">
-				<div class="pop-contents">
-					<div class="row div-popmsg">
-						<h4 class="col-md-1">
-							<span class="glyphicon glyphicon-info-sign"> </span>
-						</h4>
-						<h4 class="col-md-11 message">
-						
-						</h4>
-					</div>
-					
-					<div class="div-popbtn">
-						<button type="button" class="btn btn-default ok">
-							<span class="glyphicon glyphicon-ok"> </span> &nbsp;확인
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
-	<script src="/resources/js/layerpopup.js"></script>
+	</div>	
 </body>
 <script>
-var $el_alert = $("#alert-pop");
 var $el_confirm = $("#confirm-pop");
+var login_id = "${login.uid}";
 
 $(document).ready(function() {
 	$("#btn-search-enroll").on("click", function(event) {
@@ -210,6 +180,8 @@ $(document).ready(function() {
 		
 		if(checked_count == 0) {
 			layer_popup.alert($el_alert, "선택된 항목이 없습니다.");
+		} else if(!login_id) {
+			layer_popup.alert($el_alert, "로그인이 필요한 서비스 입니다.");
 		} else {
 			layer_popup.confirm($el_confirm, "선택된 항목들을 삭제하시겠습니까?", function(event) {
 				checkedEnrollJson = JSON.stringify(enrollArray);

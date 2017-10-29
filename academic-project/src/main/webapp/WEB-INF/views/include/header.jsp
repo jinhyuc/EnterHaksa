@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="/resources/js/layerpopup.js"></script>
+	<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
 	<nav class="navbar navbar-fixed-top navbar-default" role="navigation">
 		<div class="container">
 			<!-- Brand and toggle get grouped for better mobile display -->
@@ -32,7 +35,7 @@
 									<small><i class="fa fa-user-o"></i> &nbsp; ${login.uid} <span class="caret"></span></small>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a href="/user/logout">로그아웃</a></li>
+									<li class="logout"><a>로그아웃</a></li>
 								</ul>
 							</c:when>
 							<c:otherwise>
@@ -46,3 +49,45 @@
 			</div>
 		</div>
 	</nav>
+	<div class="layer alert-layer">
+		<div class="layer-bg">
+		</div>
+		<div id="alert-pop" class="pop-layer">
+			<div class="pop-container">
+				<div class="pop-contents">
+					<div class="row div-popmsg">
+						<h4 class="col-md-1">
+							<span class="glyphicon glyphicon-info-sign"> </span>
+						</h4>
+						<h4 class="col-md-11 message">
+						
+						</h4>
+					</div>
+					
+					<div class="div-popbtn">
+						<button type="button" class="btn btn-default ok">
+							<span class="glyphicon glyphicon-ok"> </span> &nbsp;확인
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		var $el_alert = $("#alert-pop");
+		
+		$(".logout").on("click", function(event) {
+			$.ajax({
+				type: "post",
+				url: "/user/logout/",
+				success: function(result) {
+					console.log("enroll result: " + result);
+					if(result == "LOGOUT") {
+						layer_popup.alert($el_alert, "로그아웃 되었습니다.", function(event) {
+							location.reload();
+						});
+					}
+				}
+			});
+		});
+	</script>

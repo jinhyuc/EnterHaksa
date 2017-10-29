@@ -135,8 +135,6 @@ console.log("result : " + result);
 
 if(result == "CREATE-SUCCESS") {
 	layer_popup.alert($el_alert, "사용자 등록 되었습니다.");
-} else if(result == "LOGOUT") {
-	layer_popup.alert($el_alert, "로그아웃 되었습니다.");
 }
 </script>
 </html>

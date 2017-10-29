@@ -97,36 +97,6 @@
 		</div>
 	</div>
 	<jsp:include page="../include/footer.jsp" />
-	<div class="layer alert-layer">
-		<div class="layer-bg">
-		</div>
-		<div id="alert-pop" class="pop-layer">
-			<div class="pop-container">
-				<div class="pop-contents">
-					<div class="row div-popmsg">
-						<h4 class="col-md-1">
-							<span class="glyphicon glyphicon-info-sign"> </span>
-						</h4>
-						<h4 class="col-md-11 message">
-						
-						</h4>
-					</div>
-					
-					<div class="div-popbtn">
-						<button type="button" class="btn btn-default ok">
-							<span class="glyphicon glyphicon-ok"> </span> &nbsp;확인
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
-	<script src="/resources/js/layerpopup.js"></script>
 </body>
 <script>
 	$(document).ready(function() {
@@ -146,7 +116,6 @@
 	});
 	
 	var result="${result}";
-	var $el_alert = $("#alert-pop");
 	
 	if(result == "CREATE-SUCCESS") {
 		layer_popup.alert($el_alert, "강좌 등록이 완료 되었습니다.");

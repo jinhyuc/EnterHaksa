@@ -38,10 +38,10 @@
 			<beans:ref bean="loginInterceptor"/>
 		</interceptor>
 		<interceptor>
-			<mapping path="/professors/**"/>
-			<mapping path="/students/**"/>
-			<mapping path="/courses/**"/>
-			<mapping path="/enrollments/**"/>
+			<mapping path="/professors/remove/**"/>
+			<mapping path="/students/remove/**"/>
+			<mapping path="/courses/remove/**"/>
+			<mapping path="/enrollments/delete/**"/>
 			<beans:ref bean="authInterceptor"/>
 		</interceptor>
 	</interceptors>

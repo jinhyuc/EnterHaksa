@@ -183,38 +183,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="layer alert-layer">
-		<div class="layer-bg">
-		</div>
-		<div id="alert-pop" class="pop-layer">
-			<div class="pop-container">
-				<div class="pop-contents">
-					<div class="row div-popmsg">
-						<h4 class="col-md-1">
-							<span class="glyphicon glyphicon-warning-sign red"> </span>
-						</h4>
-						<h4 class="col-md-11 message">
-						
-						</h4>
-					</div>
-					
-					<div class="div-popbtn">
-						<button type="button" class="btn btn-default ok">
-							<span class="glyphicon glyphicon-ok"> </span> &nbsp;확인
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="/resources/bootstrap/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
 	<script src="/resources/js/upload.js"></script>
-	<script src="/resources/js/layerpopup.js"></script>
 </body>
 <script id="template-clist" type="text/x-handlebars-template">
 	<table class="table table-hover">
@@ -247,7 +218,7 @@
 <script>
 var scode = "${svo.scode}";
 var $el_confirm = $("#confirm-pop");
-var $el_alert = $("#alert-pop");
+var login_id = "${login.uid}";
 
 var printList = function(list, templateObj) {
 	var template = Handlebars.compile(templateObj.html());
@@ -286,6 +257,8 @@ $(document).ready(function() {
 			
 			if(data.count > 0) {
 				layer_popup.alert($el_alert, "수강신청을 한 학생은 삭제할 수 없습니다.");
+			} else if(!login_id) {
+				layer_popup.alert($el_alert, "로그인이 필요한 서비스 입니다.");
 			} else {
 				layer_popup.confirm($el_confirm, "학생 정보를 삭제하시겠습니까?", function() {
 					deletePicture();
